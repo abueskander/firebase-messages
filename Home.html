@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TogareloStock</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Almarai:wght@700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Almarai', sans-serif;
+            background-color: #f3f4f7;
+            margin: 0;
+            padding: 0;
+        }
+        header {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #ffffff;
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
+        }
+        .menu-icons {
+            display: flex;
+            gap: 15px;
+            position: relative;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+        .menu-icons i {
+            font-size: 24px;
+            color: #333;
+            cursor: pointer;
+        }
+        .tooltip, .groups-menu, .actions-menu, .messages-menu {
+            position: absolute;
+            top: 35px;
+            background-color: #333;
+            color: #fff;
+            padding: 10px;
+            border-radius: 5px;
+            font-size: 14px;
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            white-space: nowrap;
+            z-index: 1000;
+        }
+        .tooltip.show, .groups-menu.show, .actions-menu.show, .messages-menu.show {
+            display: flex;
+        }
+        .groups-menu .title, .actions-menu .title, .messages-menu .title {
+            padding: 5px 10px;
+            background-color: #0a0;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+        .groups-menu a, .actions-menu a, .messages-menu a {
+            padding: 5px 10px;
+            border-radius: 5px;
+            text-decoration: none;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-weight: bold;
+        }
+        .facebook { background-color: #3b5998; }
+        .whatsapp { background-color: #25D366; }
+        .telegram { background-color: #0088cc; }
+        .search {
+            flex: 1 1 100%;
+            margin: 10px 0;
+            order: 3;
+        }
+        .search input {
+            width: 100%;
+            padding: 5px 10px;
+            border-radius: 15px;
+            border: 1px solid #ccc;
+            font-weight: bold;
+        }
+        .admin-button {
+            background-color: #0a0;
+            color: white;
+            border: none;
+            padding: 5px 15px;
+            border-radius: 15px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        .content {
+            text-align: center;
+            padding: 30px 10px;
+            font-weight: bold;
+        }
+        .content h1 {
+            font-size: 28px;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+        .contact {
+            color: green;
+            font-weight: bold;
+            margin-top: 5px;
+        }
+        .categories {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+        .category {
+            text-align: center;
+            width: 45%;
+            margin-bottom: 20px;
+            font-weight: bold;
+        }
+        .category i, .shoe-icon, .box-icon {
+            font-size: 40px;
+            color: #333;
+            margin-bottom: 10px;
+        }
+        .abu-name {
+            font-size: 14px;
+            color: #555;
+            font-weight: bold;
+            margin-right: 5px;
+        }
+        @media (min-width: 600px) {
+            .category {
+                width: 150px;
+            }
+            .search {
+                order: 0;
+                flex: 1;
+                margin: 0 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="menu-icons">
+        <div class="icon-wrapper">
+            <i class="fas fa-house" id="homeIcon"></i>
+            <div class="tooltip" id="homeTooltip">الرئيسية</div>
+        </div>
+        <div class="icon-wrapper">
+            <i class="fas fa-users" id="groupsIcon"></i>
+            <div class="groups-menu" id="groupsMenu">
+                <div class="title">المجموعات</div>
+                <a class="facebook" href="https://www.facebook.com/share/g/17QVpknXcw/" target="_blank">جروب الفيس بوك</a>
+                <a class="whatsapp" href="https://chat.whatsapp.com/BfDGQ9PMmAaKOT3VheZkoX" target="_blank">جروب واتس</a>
+                <a class="telegram" href="https://t.me/togareloctock" target="_blank">جروب تليجرام</a>
+            </div>
+        </div>
+        <div class="icon-wrapper">
+            <i class="fas fa-plus-circle" id="actionsIcon"></i>
+            <div class="actions-menu" id="actionsMenu">
+                <div class="title">الخيارات</div>
+                <a href="#">نشر منشور</a>
+                <a href="#">البحث عن تاجر</a>
+                <a href="#">تصفح المنتجات</a>
+            </div>
+        </div>
+        <div class="icon-wrapper">
+            <i class="fab fa-facebook-messenger" id="messagesIcon"></i>
+            <span class="abu-name">Abu eskander</span>
+            <div class="messages-menu" id="messagesMenu">
+                <div class="title">الرسائل</div>
+                <a class="facebook" href="https://m.me/ch/AbaLFOYdGW3jm0Rj/" target="_blank"><i class="fab fa-facebook-f"></i> فيس بوك</a>
+                <a class="telegram" href="https://t.me/togareloctock" target="_blank"><i class="fab fa-telegram"></i> تليجرام</a>
+                <a class="whatsapp" href="https://chat.whatsapp.com/BfDGQ9PMmAaKOT3VheZkoX" target="_blank"><i class="fab fa-whatsapp"></i> واتساب</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="search">
+        <input type="text" placeholder="ابحث في">
+    </div>
+
+    <button class="admin-button" onclick="window.location.href='tel:01021205253'">الأدمن</button>
+</header>
+
+<div class="content">
+    <h1>TogareloStock</h1>
+    <div>تحت الإنشاء بواسطة أبو اسكندر</div>
+    <div class="contact">01021205253</div>
+
+    <div class="categories">
+        <div class="category">
+            <i class="fas fa-shopping-bag"></i>
+            <div>تجار الشنط</div>
+        </div>
+        <div class="category">
+            <div class="shoe-icon">👟</div>
+            <div>تجار الأحذية</div>
+        </div>
+        <div class="category">
+            <i class="fas fa-globe-europe"></i>
+            <div>تجار الاستوكات</div>
+        </div>
+        <div class="category">
+            <i class="fas fa-box"></i>
+            <div>تجار البالة</div>
+        </div>
+    </div>
+</div>
+
+<script>
+    const homeIcon = document.getElementById('homeIcon');
+    const homeTooltip = document.getElementById('homeTooltip');
+    const groupsIcon = document.getElementById('groupsIcon');
+    const groupsMenu = document.getElementById('groupsMenu');
+    const actionsIcon = document.getElementById('actionsIcon');
+    const actionsMenu = document.getElementById('actionsMenu');
+    const messagesIcon = document.getElementById('messagesIcon');
+    const messagesMenu = document.getElementById('messagesMenu');
+
+    function closeAllMenus() {
+        homeTooltip.classList.remove('show');
+        groupsMenu.classList.remove('show');
+        actionsMenu.classList.remove('show');
+        messagesMenu.classList.remove('show');
+    }
+
+    homeIcon.addEventListener('click', () => {
+        closeAllMenus();
+        homeTooltip.classList.add('show');
+        setTimeout(() => homeTooltip.classList.remove('show'), 1000);
+    });
+
+    function toggleMenu(menu) {
+        closeAllMenus();
+        menu.classList.add('show');
+        setTimeout(() => menu.classList.remove('show'), 1000);
+    }
+
+    groupsIcon.addEventListener('click', () => toggleMenu(groupsMenu));
+    actionsIcon.addEventListener('click', () => toggleMenu(actionsMenu));
+    messagesIcon.addEventListener('click', () => toggleMenu(messagesMenu));
+</script>
+
+</body>
+</html>
