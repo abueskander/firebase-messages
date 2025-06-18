@@ -37,25 +37,55 @@
             openFormBtn.style.display = "none";
             contentInput.focus();
         });
+function canPost() {
+    const lastPostTime = localStorage.getItem("lastPostTime");
+    if (!lastPostTime) return true;
+
+    const now = Date.now();
+    const diff = now - parseInt(lastPostTime, 10);
+    return diff >= 5 * 60 * 1000; // 5 دقائق = 300000 ملي ثانية
+}
+
+function getTimeRemaining() {
+    const lastPostTime = localStorage.getItem("lastPostTime");
+    if (!lastPostTime) return 0;
+
+    const now = Date.now();
+    const diff = now - parseInt(lastPostTime, 10);
+    const remaining = 5 * 60 * 1000 - diff;
+    return Math.ceil(remaining / 1000); // بالثواني
+}
 
         form.addEventListener("submit", async (e) => {
-            e.preventDefault();
-            const content = contentInput.value.trim();
-            if (content) {
-                const randomName = names[Math.floor(Math.random() * names.length)];
-                await addDoc(collection(db, "messages"), {
-                    phone: randomName,
-                    content,
-                    timestamp: serverTimestamp()
-                });
-                form.reset();
-            
-            contentInput.focus();
-          document.getElementById("sendSound").play();
+    e.preventDefault();
 
-            }
-        
+    // 🔒 تحقق هل يُسمح بالنشر
+    if (!canPost()) {
+        const remaining = getTimeRemaining();
+        alert(`يجب الانتظار ${remaining} ثانية قبل النشر مرة أخرى.`);
+        return;
+    }
+
+    const content = contentInput.value.trim();
+    if (content) {
+        const randomName = names[Math.floor(Math.random() * names.length)];
+        await addDoc(collection(db, "messages"), {
+            phone: randomName,
+            content,
+            timestamp: serverTimestamp()
         });
+
+        // ⏱️ خزّن وقت الإرسال في localStorage
+        localStorage.setItem("lastPostTime", Date.now());
+
+        // 🎵 شغل صوت الإرسال
+        document.getElementById("sendSound").play();
+
+        form.reset();
+        contentInput.focus();
+    }
+});
+
 
         function timeAgo(date) {
             const now = new Date();
