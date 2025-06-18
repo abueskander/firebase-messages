@@ -54,14 +54,15 @@
     card.className = "card";
     card.innerHTML = `
       <h3>${data.name || 'بدون اسم'}</h3>
-      <p><strong>📍 المحافظة:</strong> ${data.governorate || '-'}</p>
-      <p><strong>📦 الصنف:</strong> ${data.type || '-'}</p>
+      <p><strong>📍 المحافظة:</strong> ${data.gov || '-'}</p>
+      <p><strong>📦 الصنف:</strong> ${data.category || '-'}</p>
       <p><strong>📱 واتساب:</strong> ${data.whatsapp || '-'}</p>
       <p><strong>🌐 تواصل:</strong> <a href="${data.contact || '#'}" target="_blank">${data.contact || '-'}</a></p>
       <p><strong>🏠 العنوان:</strong> ${data.address || '-'}</p>
       <p><strong>🏪 الفروع:</strong> ${data.branches || '-'}</p>
       <p><strong>💼 النشاط:</strong> ${data.activity || '-'}</p>
-      <p><strong>👥 جروب الفيس:</strong> <a href="${data.facebook || '#'}" target="_blank">${data.facebook || '-'}</a></p>
+      <p><strong>👥 جروب الفيس:</strong> <a href="${data.facebookGroup || '#'}" target="_blank">${data.facebookGroup || '-'}</a></p>
+      <p><strong>🛍️ قطاعي:</strong> ${data.retail || '-'}</p>
     `;
     container.appendChild(card);
   });
