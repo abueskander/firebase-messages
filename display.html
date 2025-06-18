@@ -87,7 +87,7 @@
       100% { transform: scale(1); }
     }
     .fab-menu {
-      display: block;
+      display: none;
       position: fixed;
       bottom: 90px;
       left: 20px;
@@ -126,11 +126,21 @@
     }
   </style>
   <script>
+    let menuTimeout;
     function toggleFabMenu() {
       const menu = document.getElementById('fabMenu');
-      menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
+      const isVisible = menu.style.display === 'block';
+      if (!isVisible) {
+        menu.style.display = 'block';
+        clearTimeout(menuTimeout);
+        menuTimeout = setTimeout(() => {
+          menu.style.display = 'none';
+        }, 4000);
+      } else {
+        menu.style.display = 'none';
+        clearTimeout(menuTimeout);
+      }
     }
-
     function scrollToTop() {
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
@@ -141,7 +151,7 @@
 <h2>📞 أرقام وعناوين تجار الاستوكات 🛍️</h2>
 
 <div class="top-buttons">
-  <a href="https://abueskander.github.io/firebase-messages/index.html">الرئيسية</a>
+  <a href="https://abueskander.github.io/firebase-messages/home.html">الرئيسية</a>
   <a href="https://www.facebook.com/share/g/1VCHWvUnHD/">جروب الفيس بوك </a>
   <a href="https://abueskander.github.io/firebase-messages/message.html" target="_blank">💬 المجتمع</a>
 </div>
@@ -179,7 +189,7 @@
     إضافة تاجر
     <span>📤 اضغط وأرسل بيانات تاجر</span>
   </a>
-  <a href="https://abueskander.github.io/firebase-messages/index.html">
+  <a href="https://abueskander.github.io/firebase-messages/home.html">
     الرئيسية
     <span>🏠 عودة للصفحة الرئيسية</span>
   </a>
