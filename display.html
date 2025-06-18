@@ -37,13 +37,9 @@
       border: 1px solid #ccc;
       flex: 1;
       min-width: 100px;
-      transition: border 0.3s;
+      transition: border-color 0.3s;
     }
-    .filters input:focus, .filters select:focus {
-      outline: none;
-      border-color: #00796b;
-    }
-    .filters .highlight {
+    .highlight {
       border: 2px solid red !important;
     }
     .hint {
@@ -149,15 +145,11 @@
         clearTimeout(menuTimeout);
       }
     }
-
-    function scrollToTop() {
+    function scrollToSearch() {
+      const govInput = document.getElementById('govFilter');
       window.scrollTo({ top: 0, behavior: 'smooth' });
-    }
-
-    function highlightGovFilter() {
-      const govFilter = document.getElementById('govFilter');
-      govFilter.classList.add('highlight');
-      setTimeout(() => govFilter.classList.remove('highlight'), 2000);
+      govInput.classList.add('highlight');
+      setTimeout(() => govInput.classList.remove('highlight'), 3000);
     }
   </script>
 </head>
@@ -196,11 +188,11 @@
 
 <div class="fab-button" onclick="toggleFabMenu()">+</div>
 <div class="fab-menu" id="fabMenu">
-  <a href="#" onclick="scrollToTop(); return false;">
+  <a href="#" onclick="scrollToSearch(); return false;">
     البحث عن تاجر
     <span>🔍 ارجع للأعلى للبحث</span>
   </a>
-  <a href="#" onclick="scrollToTop(); highlightGovFilter(); return false;">
+  <a href="https://wa.me/+201021205253" target="_blank">
     إضافة تاجر
     <span>📤 اضغط وأرسل بيانات تاجر</span>
   </a>
