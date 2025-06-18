@@ -162,6 +162,21 @@
             font-weight: bold;
             cursor: pointer;
         }
+        .message-button {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: #0a0;
+            color: white;
+            border: none;
+            padding: 15px 20px;
+            border-radius: 50px;
+            font-size: 16px;
+            font-weight: bold;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+            cursor: pointer;
+            z-index: 9999;
+        }
     </style>
 </head>
 <body>
@@ -236,10 +251,12 @@
 
 <div class="login-popup" id="loginPopup">
     <div class="popup-content">
-        <p>لطفًا، قم بتسجيل الدخول للوصول الكامل للموقع</p>
-        <button onclick="document.getElementById('loginPopup').style.display='none'">إغلاق</button>
+        <p>لطفًا 🌹، قم بتسجيل الدخول للوصول الكامل للموقع</p>
+        <button onclick="document.getElementById('loginPopup').style.display='none'">تجربة الموقع</button>
     </div>
 </div>
+
+<a href="https://abueskander.github.io/firebase-messages/message.html" class="message-button">المحادثة الجماعيه</a>
 
 <script>
     const homeIcon = document.getElementById('homeIcon');
@@ -274,7 +291,6 @@
     actionsIcon.addEventListener('click', () => toggleMenu(actionsMenu));
     messagesIcon.addEventListener('click', () => toggleMenu(messagesMenu));
 
-    // Show login popup after 3 seconds
     window.onload = function() {
         setTimeout(() => {
             document.getElementById('loginPopup').style.display = 'flex';
