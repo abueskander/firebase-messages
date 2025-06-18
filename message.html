@@ -29,9 +29,12 @@
         const messageBox = document.getElementById("messageBox");
         const openFormBtn = document.getElementById("openFormBtn");
         const refreshBtn = document.getElementById("refreshBtn");
+        const homeBtn = document.getElementById("homeBtn");
+        const searchBtn = document.getElementById("searchBtn");
 
         openFormBtn.addEventListener("click", () => {
-            messageBox.classList.toggle("visible");
+            messageBox.classList.add("visible");
+            openFormBtn.style.display = "none";
             contentInput.focus();
         });
 
@@ -46,8 +49,12 @@
                     timestamp: serverTimestamp()
                 });
                 form.reset();
-                contentInput.focus();
+            
+            contentInput.focus();
+          document.getElementById("sendSound").play();
+
             }
+        
         });
 
         function timeAgo(date) {
@@ -85,6 +92,14 @@
         refreshBtn.addEventListener("click", () => {
             location.reload();
         });
+
+        homeBtn.addEventListener("click", () => {
+            window.location.href = "https://abueskander.github.io/firebase-messages/index.html";
+        });
+
+        searchBtn.addEventListener("click", () => {
+            window.location.href = "https://abueskander.github.io/firebase-messages/display.html?search=%D8%A7%D9%84%D8%A7%D8%B3%D9%83%D9%86%D8%AF%D8%B1%D9%8A%D9%87";
+        });
     </script>
     <style>
         * {
@@ -93,13 +108,15 @@
 
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: #e5ddd5;
+            background: url('https://abueskander.github.io/firebase-messages/images.jpeg') no-repeat center center fixed;
+            background-size: cover;
             margin: 0;
             padding: 0;
             display: flex;
             flex-direction: column;
             height: 100vh;
             position: relative;
+            color: white;
         }
 
         #messages {
@@ -108,7 +125,7 @@
             padding: 10px;
             display: flex;
             flex-direction: column;
-            margin-bottom: 150px;
+            margin-bottom: 130px;
         }
 
         .message {
@@ -116,60 +133,34 @@
         }
 
         .message-box {
-            background: #dcf8c6;
+            background: #000;
             padding: 10px;
-            border: 2px solid green;
-            border-radius: 10px;
-            word-wrap: break-word;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            border-radius: 20px;
+            max-width: 80%;
+            align-self: flex-end;
+            font-size: 16px;
+            position: relative;
+            box-shadow: 0 1px 1px rgba(0,0,0,0.1);
+            color: white;
+            border: 1px solid white;
         }
 
         .message-box small {
             font-size: 11px;
-            color: #555;
-        }
-
-        #openFormBtn {
-            position: fixed;
-            bottom: 120px;
-            left: 20px;
-            background-color: #25D366;
-            color: white;
-            border: none;
-            border-radius: 50px;
-            padding: 12px 20px;
-            font-size: 16px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-            cursor: pointer;
-            z-index: 999;
-        }
-
-        #openFormBtn::after {
-            content: ' النشر في المجتمع';
-        }
-
-        #refreshBtn {
-            position: fixed;
-            bottom: 60px;
-            left: 20px;
-            background-color: #007bff;
-            color: white;
-            border: none;
-            border-radius: 25px;
-            padding: 10px 16px;
-            font-size: 14px;
-            cursor: pointer;
-            z-index: 999;
+            color: #eee;
+            display: block;
+            margin-top: 4px;
+            text-align: right;
         }
 
         #messageBox {
             position: fixed;
-            bottom: 20px;
+            bottom: 65px;
             left: 20px;
             width: calc(100% - 40px);
             max-width: 500px;
             background: white;
-            border-radius: 12px;
+            border-radius: 30px;
             box-shadow: 0 6px 20px rgba(0,0,0,0.2);
             display: none;
             padding: 12px;
@@ -190,15 +181,14 @@
         #messageForm textarea {
             flex: 1;
             padding: 12px;
-            border-radius: 25px;
+            border-radius: 20px;
             border: 1px solid #ccc;
             font-size: 16px;
             resize: none;
-            height: 50px;
-            background: #f9f9f9;
+            height: 45px;
+            background: #f0f0f0;
             outline: none;
-            transition: border 0.3s;
-            box-shadow: inset 0 1px 3px rgba(0,0,0,0.1);
+            color: #333;
         }
 
         #messageForm textarea:focus {
@@ -207,48 +197,97 @@
         }
 
         #messageForm button {
-            padding: 12px 18px;
+            padding: 10px 12px;
             background: #25D366;
             color: white;
             border: none;
-            border-radius: 25px;
-            font-weight: bold;
-            font-size: 16px;
+            border-radius: 50%;
+            font-size: 20px;
             cursor: pointer;
             transition: background 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
         #messageForm button:hover {
             background: #1ebe5d;
         }
-        #chatLogo {
-    position: fixed;
-    bottom: 10px;
-    right: 10px;
-    width: 50px;
-    height: 50px;
-    border-radius: 12px;
-    box-shadow: 0 0 8px rgba(0,0,0,0.3);
-    z-index: 998;
-}
 
+        #messageForm button::before {
+            content: '➤';
+        }
+
+        #openFormBtn {
+            position: fixed;
+            bottom: 65px;
+            left: 20px;
+            background-color: #25D366;
+            color: white;
+            border: none;
+            border-radius: 50px;
+            padding: 12px 20px;
+            font-size: 16px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            cursor: pointer;
+            z-index: 999;
+        }
+
+        #openFormBtn::after {
+            content: ' النشر في المجتمع';
+        }
+
+        #refreshBtn, #homeBtn, #searchBtn {
+            position: fixed;
+            bottom: 15px;
+            background-color: #128C45;
+            color: white;
+            border: none;
+            border-radius: 25px;
+            padding: 10px 16px;
+            font-size: 14px;
+            cursor: pointer;
+            z-index: 999;
+        }
+
+        #refreshBtn {
+            left: 20px;
+        }
+
+        #homeBtn {
+            left: 140px;
+        }
+
+        #searchBtn {
+            left: 270px;
+        }
+
+        #chatLogo {
+            position: fixed;
+            top: 10px;
+            right: 10px;
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            box-shadow: 0 0 8px rgba(0,0,0,0.3);
+            z-index: 998;
+        }
     </style>
-    
 </head>
 <body>
-    <div id="messages"></div>
+   <audio id="sendSound" src="https://abueskander.github.io/firebase-messages/%D8%B5%D9%88%D8%AA%20%D9%84%D9%84%D9%85%D9%88%D9%86%D8%AA%D8%A7%D8%AC%20_car%20_carryminati%20_cartoon%20_youtubeshorts%20_youtube(M4A_128K).m4a" preload="auto"></audio>
 
+    <div id="messages"></div>
     <div id="messageBox">
         <form id="messageForm">
             <textarea id="content" placeholder="اكتب رسالتك..." required></textarea>
-            <button type="submit">ارسال</button>
+            <button type="submit"></button>
         </form>
     </div>
-
     <button id="openFormBtn">📝</button>
-    
-<button id="refreshBtn">تحديث الصفحة</button>
+    <button id="refreshBtn">تحديث الصفحة</button>
+    <button id="homeBtn">القائمة الرئيسية</button>
+    <button id="searchBtn">ابحث عن تاجر</button>
     <img src="https://abueskander.github.io/firebase-messages/FB_IMG_1750277736215.jpg" alt="لوجو" id="chatLogo">
-
 </body>
 </html>
