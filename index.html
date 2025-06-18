@@ -24,6 +24,12 @@
         const form = document.getElementById("messageForm");
         const contentInput = document.getElementById("content");
         const messagesDiv = document.getElementById("messages");
+        const messageBox = document.getElementById("messageBox");
+        const openFormBtn = document.getElementById("openFormBtn");
+
+        openFormBtn.addEventListener("click", () => {
+            messageBox.classList.toggle("visible");
+        });
 
         form.addEventListener("submit", async (e) => {
             e.preventDefault();
@@ -36,6 +42,7 @@
                 });
                 form.reset();
                 alert("من فضلك استخدم ميزة إرسال الرسائل بشكل محترم");
+                messageBox.classList.remove("visible");
             }
         });
 
@@ -74,6 +81,7 @@
             display: flex;
             flex-direction: column;
             height: 100vh;
+            position: relative;
         }
 
         #messages {
@@ -101,13 +109,42 @@
             font-size: 18px;
         }
 
-        #messageForm {
-            background: #fff;
+        #openFormBtn {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            background-color: #25D366;
+            color: white;
+            border: none;
+            border-radius: 50px;
+            padding: 12px 20px;
+            font-size: 16px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            cursor: pointer;
+            z-index: 999;
+        }
+
+        #messageBox {
+            position: fixed;
+            bottom: 80px;
+            left: 20px;
+            width: calc(100% - 40px);
+            max-width: 500px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+            display: none;
             padding: 10px;
+        }
+
+        #messageBox.visible {
+            display: block;
+        }
+
+        #messageForm {
             display: flex;
             flex-direction: row;
             align-items: center;
-            border-top: 1px solid #ccc;
         }
 
         #messageForm textarea {
@@ -130,24 +167,18 @@
             font-weight: bold;
             font-size: 16px;
         }
-
-        @media (max-width: 600px) {
-            .message {
-                font-size: 14px;
-            }
-            #messageForm textarea,
-            #messageForm button {
-                font-size: 14px;
-            }
-        }
     </style>
 </head>
 <body>
     <div id="messages"></div>
 
-    <form id="messageForm">
-        <textarea id="content" placeholder="اكتب رسالتك..." required></textarea>
-        <button type="submit">📨</button>
-    </form>
+    <button id="openFormBtn">📝 إرسال رسالة</button>
+
+    <div id="messageBox">
+        <form id="messageForm">
+            <textarea id="content" placeholder="اكتب رسالتك..." required></textarea>
+            <button type="submit">📨</button>
+        </form>
+    </div>
 </body>
 </html>
