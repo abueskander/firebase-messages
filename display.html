@@ -263,7 +263,7 @@
       })
       .forEach(data => {
         const card = document.createElement("div");
-        card.className = "card collapsed";
+        card.className = "card";
         card.innerHTML = `
           <h3>${data.name || 'بدون اسم'}</h3>
           <p><strong>📍 المحافظة:</strong> ${data.gov || '-'}</p>
@@ -275,17 +275,8 @@
           <p><strong>💼 النشاط:</strong> ${data.activity || '-'}</p>
           <p><strong>👥 جروب الفيس:</strong> <a href="${data.facebookGroup || '#'}" target="_blank">${data.facebookGroup || '-'}</a></p>
           <p><strong>⚖️ الوزن:</strong> ${data.retail || '-'}</p>
-          <button class="more-btn" onclick="this.parentElement.classList.remove('collapsed'); this.remove();">عرض المزيد</button>
         `;
         container.appendChild(card);
-
-        requestAnimationFrame(() => {
-          if (card.scrollHeight <= 300) {
-            card.classList.remove("collapsed");
-            const moreBtn = card.querySelector(".more-btn");
-            if (moreBtn) moreBtn.remove();
-          }
-        });
       });
   };
 
