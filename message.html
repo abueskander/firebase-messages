@@ -29,6 +29,8 @@
         const messageBox = document.getElementById("messageBox");
         const openFormBtn = document.getElementById("openFormBtn");
 
+        let alertShown = false;
+
         openFormBtn.addEventListener("click", () => {
             messageBox.classList.toggle("visible");
             contentInput.focus();
@@ -45,7 +47,6 @@
                     timestamp: serverTimestamp()
                 });
                 form.reset();
-                alert(" من فضلك استخدم ميزة إرسال الرسائل بشكل كويس بحيث اقدر اطور ولو عندك فكره اكتبها");
                 contentInput.focus();
             }
         });
@@ -53,7 +54,7 @@
         const q = query(collection(db, "messages"), orderBy("timestamp", "asc"));
         onSnapshot(q, (snapshot) => {
             messagesDiv.innerHTML = "";
-            snapshot.forEach((doc) => {
+            snapshot.forEach((doc, index) => {
                 const data = doc.data();
                 const dateObj = data.timestamp?.toDate();
                 const date = dateObj ? dateObj.toLocaleDateString('ar-EG', { day: 'numeric', month: 'long', year: 'numeric' }) + '، ' + dateObj.toLocaleTimeString('ar-EG', { hour: 'numeric', minute: 'numeric' }) : "جارٍ التحميل...";
@@ -69,6 +70,11 @@
                 messagesDiv.appendChild(div);
             });
             messagesDiv.scrollTop = messagesDiv.scrollHeight;
+
+            if (!alertShown) {
+                alert(" من فضلك استخدم ميزة إرسال الرسائل بشكل كويس بحيث اقدر اطور ولو عندك فكره اكتبها");
+                alertShown = true;
+            }
         });
     </script>
     <style>
