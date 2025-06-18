@@ -1,112 +1,113 @@
+<!-- add.html -->
 <!DOCTYPE html>
 <html lang="ar">
 <head>
-    <meta charset="UTF-8">
-    <title>إضافة تاجر</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <style>
-        body {
-            font-family: 'Cairo', sans-serif;
-            background: linear-gradient(to bottom right, #e0f7fa, #ffffff);
-            direction: rtl;
-            margin: 0;
-            padding: 20px;
-        }
-        h2 {
-            text-align: center;
-            color: #00796b;
-            margin-bottom: 30px;
-        }
-        form {
-            background: #ffffff;
-            padding: 25px;
-            border-radius: 15px;
-            max-width: 500px;
-            margin: auto;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
-        }
-        input, textarea, button {
-            width: 100%;
-            margin-bottom: 20px;
-            padding: 12px;
-            font-size: 17px;
-            border: 1px solid #ccc;
-            border-radius: 8px;
-            transition: border-color 0.3s;
-        }
-        input:focus, textarea:focus {
-            border-color: #00796b;
-            outline: none;
-        }
-        button {
-            background-color: #00796b;
-            color: white;
-            font-weight: bold;
-            border: none;
-            cursor: pointer;
-            transition: background-color 0.3s;
-        }
-        button:hover {
-            background-color: #004d40;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <title>إضافة تاجر</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    body {
+      font-family: 'Cairo', sans-serif;
+      background: linear-gradient(to bottom right, #e0f7fa, #ffffff);
+      direction: rtl;
+      margin: 0;
+      padding: 20px;
+    }
+    h2 {
+      text-align: center;
+      color: #00796b;
+      margin-bottom: 30px;
+    }
+    form {
+      background: #ffffff;
+      padding: 25px;
+      border-radius: 15px;
+      max-width: 500px;
+      margin: auto;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+    }
+    input, textarea, button {
+      width: 100%;
+      margin-bottom: 20px;
+      padding: 12px;
+      font-size: 17px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      transition: border-color 0.3s;
+    }
+    input:focus, textarea:focus {
+      border-color: #00796b;
+      outline: none;
+    }
+    button {
+      background-color: #00796b;
+      color: white;
+      font-weight: bold;
+      border: none;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+    button:hover {
+      background-color: #004d40;
+    }
+  </style>
 </head>
 <body>
 
 <h2>📋 إضافة بيانات تاجر جديد</h2>
 
 <form id="addForm">
-    <input type="text" id="gov" placeholder="المحافظة" required>
-    <input type="text" id="name" placeholder="الاسم" required>
-    <input type="text" id="category" placeholder="الصنف" required>
-    <input type="text" id="address" placeholder="العنوان" required>
-    <input type="text" id="contact" placeholder="رابط التواصل" required>
-    <input type="text" id="facebookGroup" placeholder="جروب فيس بوك" required>
-    <input type="text" id="whatsapp" placeholder="رقم واتساب" required>
-    <input type="text" id="activity" placeholder="النشاط" required>
-    <input type="text" id="branches" placeholder="الفروع" required>
-    <input type="text" id="retail" placeholder="قطاعي" required>
-    <button type="submit">💾 حفظ البيانات</button>
+  <input type="text" id="gov" placeholder="المحافظة" required>
+  <input type="text" id="name" placeholder="الاسم" required>
+  <input type="text" id="category" placeholder="الصنف" required>
+  <input type="text" id="address" placeholder="العنوان" required>
+  <input type="text" id="contact" placeholder="رابط التواصل" required>
+  <input type="text" id="facebookGroup" placeholder="جروب فيس بوك" required>
+  <input type="text" id="whatsapp" placeholder="رقم واتساب" required>
+  <input type="text" id="activity" placeholder="النشاط" required>
+  <input type="text" id="branches" placeholder="الفروع" required>
+  <input type="text" id="retail" placeholder="قطاعي" required>
+  <button type="submit">💾 حفظ البيانات</button>
 </form>
 
 <script type="module">
-    import { db } from './firebase-config.js';
-    import { collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+  import { db } from './firebase-config.js';
+  import { collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
-    const form = document.getElementById("addForm");
+  const form = document.getElementById("addForm");
 
-    form.addEventListener("submit", async (e) => {
-        e.preventDefault();
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
 
-        const data = {
-            governorate: document.getElementById("gov").value.trim(),
-            name: document.getElementById("name").value.trim(),
-            type: document.getElementById("category").value.trim(),
-            address: document.getElementById("address").value.trim(),
-            contact: document.getElementById("contact").value.trim(),
-            facebook: document.getElementById("facebookGroup").value.trim(),
-            whatsapp: document.getElementById("whatsapp").value.trim(),
-            activity: document.getElementById("activity").value.trim(),
-            branches: document.getElementById("branches").value.trim(),
-            retail: document.getElementById("retail").value.trim(),
-            createdAt: serverTimestamp()
-        };
+    const data = {
+      gov: document.getElementById("gov").value.trim(),
+      name: document.getElementById("name").value.trim(),
+      category: document.getElementById("category").value.trim(),
+      address: document.getElementById("address").value.trim(),
+      contact: document.getElementById("contact").value.trim(),
+      facebookGroup: document.getElementById("facebookGroup").value.trim(),
+      whatsapp: document.getElementById("whatsapp").value.trim(),
+      activity: document.getElementById("activity").value.trim(),
+      branches: document.getElementById("branches").value.trim(),
+      retail: document.getElementById("retail").value.trim(),
+      createdAt: serverTimestamp()
+    };
 
-        const allFilled = Object.values(data).every(value => value);
+    const allFilled = Object.values(data).every(value => value);
 
-        if (allFilled) {
-            try {
-                await addDoc(collection(db, "traders"), data);
-                alert("✅ تم حفظ البيانات بنجاح!");
-                form.reset();
-            } catch (error) {
-                console.error("❌ حدث خطأ:", error);
-                alert("❌ حدث خطأ أثناء الحفظ.");
-            }
-        } else {
-            alert("❗ من فضلك املأ جميع الحقول.");
-        }
-    });
+    if (allFilled) {
+      try {
+        await addDoc(collection(db, "traders"), data);
+        alert("✅ تم حفظ البيانات بنجاح!");
+        form.reset();
+      } catch (error) {
+        console.error("❌ حدث خطأ:", error);
+        alert("❌ حدث خطأ أثناء الحفظ.");
+      }
+    } else {
+      alert("❗ من فضلك املأ جميع الحقول.");
+    }
+  });
 </script>
 
 </body>
