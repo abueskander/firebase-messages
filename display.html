@@ -37,6 +37,14 @@
       border: 1px solid #ccc;
       flex: 1;
       min-width: 100px;
+      transition: border 0.3s;
+    }
+    .filters input:focus, .filters select:focus {
+      outline: none;
+      border-color: #00796b;
+    }
+    .filters .highlight {
+      border: 2px solid red !important;
     }
     .hint {
       text-align: center;
@@ -141,8 +149,15 @@
         clearTimeout(menuTimeout);
       }
     }
+
     function scrollToTop() {
       window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function highlightGovFilter() {
+      const govFilter = document.getElementById('govFilter');
+      govFilter.classList.add('highlight');
+      setTimeout(() => govFilter.classList.remove('highlight'), 2000);
     }
   </script>
 </head>
@@ -185,7 +200,7 @@
     البحث عن تاجر
     <span>🔍 ارجع للأعلى للبحث</span>
   </a>
-  <a href="https://wa.me/+201021205253" target="_blank">
+  <a href="#" onclick="scrollToTop(); highlightGovFilter(); return false;">
     إضافة تاجر
     <span>📤 اضغط وأرسل بيانات تاجر</span>
   </a>
