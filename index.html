@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <title>رسائل المستخدمين</title>
+    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js"></script>
+    <style>
+        body {
+            font-family: sans-serif;
+            background: #e5ddd5;
+            padding: 20px;
+        }
+        #messageForm {
+            background: #fff;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px #ccc;
+            margin-bottom: 20px;
+        }
+        #messages div {
+            background: #dcf8c6;
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 8px;
+        }
+        input, textarea {
+            width: 100%;
+            margin-bottom: 10px;
+            padding: 8px;
+        }
+        button {
+            padding: 10px 20px;
+            background: #25D366;
+            color: white;
+            border: none;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <h2>إرسال رسالة</h2>
+    <form id="messageForm">
+        <input type="text" id="phone" placeholder="رقم التليفون" required><br>
+        <textarea id="content" placeholder="اكتب رسالتك..." required></textarea><br>
+        <button type="submit">إرسال</button>
+    </form>
+
+    <h3>الرسائل:</h3>
+    <div id="messages"></div>
+
+    <script src="firebase-config.js"></script>
+    <script>
+        const db = firebase.firestore();
+        const form = document.getElementById('messageForm');
+        const messagesDiv = document.getElementById('messages');
+
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const phone = document.getElementById('phone').value;
+            const content = document.getElementById('content').value;
+            const timestamp = new Date();
+
+            await db.collection('messages').add({
+                phone,
+                content,
+                timestamp
+            });
+
+            form.reset();
+        });
+
+        function renderMessages() {
+            db.collection('messages').orderBy('timestamp', 'desc')
+              .onSnapshot(snapshot => {
+                messagesDiv.innerHTML = '';
+                snapshot.forEach(doc => {
+                    const data = doc.data();
+                    const msgEl = document.createElement('div');
+                    const time = new Date(data.timestamp.seconds * 1000).toLocaleString();
+                    msgEl.textContent = `${data.phone} - ${time}: ${data.content}`;
+                    messagesDiv.appendChild(msgEl);
+                });
+            });
+        }
+
+        renderMessages();
+    </script>
+</body>
+</html>
