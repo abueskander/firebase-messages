@@ -30,6 +30,11 @@
       margin-bottom: 20px;
       justify-content: center;
       position: relative;
+      transition: opacity 0.5s ease;
+    }
+    .filters.hidden {
+      opacity: 0;
+      pointer-events: none;
     }
     .filters input, .filters select {
       padding: 8px;
@@ -93,6 +98,11 @@
       bottom: 90px;
       left: 20px;
       font-size: 14px;
+      transition: opacity 0.5s ease;
+    }
+    .fab-menu.hidden {
+      opacity: 0;
+      pointer-events: none;
     }
     .fab-menu a {
       display: block;
@@ -152,19 +162,18 @@
     window.toggleFabMenu = function() {
       const menu = document.getElementById('fabMenu');
       menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
-      if (menu.style.display === 'block') {
-        setTimeout(() => {
-          menu.style.display = 'none';
-        }, 4000);
-      }
     };
 
     window.scrollToTop = function() {
       window.scrollTo({ top: 0, behavior: 'smooth' });
-      const govFilter = document.getElementById('govFilter');
-      govFilter.classList.add('highlight');
-      setTimeout(() => govFilter.classList.remove('highlight'), 2000);
     };
+
+    window.addEventListener('load', () => {
+      setTimeout(() => {
+        const fabMenu = document.getElementById('fabMenu');
+        fabMenu.classList.add('hidden');
+      }, 2000);
+    });
   </script>
 </head>
 <body>
@@ -172,7 +181,8 @@
 <h2>📞 أرقام وعناوين تجار الاستوكات 🛍️</h2>
 
 <div class="top-buttons">
-  <a href="https://abueskander.github.io/firebase-messages/index.html">الرئيسية</a>
+  <a href="https://abueskander.github.io/firebase-messages/home.html">الرئيسية</a>
+  <a href="https://www.facebook.com/share/g/1VCHWvUnHD/">جروب الفيس بوك </a>
   <a href="https://abueskander.github.io/firebase-messages/message.html" target="_blank">💬 المجتمع</a>
 </div>
 
@@ -209,9 +219,9 @@
     إضافة تاجر
     <span>📤 اضغط وأرسل بيانات تاجر</span>
   </a>
-  <a href="https://abueskander.github.io/firebase-messages/index.html">
+  <a href="https://abueskander.github.io/firebase-messages/home.html">
     الرئيسية
-    <span>🏠 صفحة البداية</span>
+    <span>🏠 عودة للصفحة الرئيسية</span>
   </a>
 </div>
 
