@@ -22,21 +22,20 @@
         const db = getFirestore(app);
 
         const form = document.getElementById("messageForm");
-        const phoneInput = document.getElementById("phone");
         const contentInput = document.getElementById("content");
         const messagesDiv = document.getElementById("messages");
 
         form.addEventListener("submit", async (e) => {
             e.preventDefault();
-            const phone = phoneInput.value.trim();
             const content = contentInput.value.trim();
-            if (phone && content) {
+            if (content) {
                 await addDoc(collection(db, "messages"), {
-                    phone,
+                    phone: "مستخدم مجهول",
                     content,
                     timestamp: serverTimestamp()
                 });
                 form.reset();
+                alert("من فضلك استخدم ميزة إرسال الرسائل بشكل محترم");
             }
         });
 
@@ -62,73 +61,6 @@
             });
         });
     </script>
-<script type="module">
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-import { getFirestore, collection, addDoc, onSnapshot, deleteDoc, doc, serverTimestamp, query, orderBy } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
-
-const firebaseConfig = {
-  apiKey: "AIzaSyCIuNrBGfVLKL-Rd1eHBSJAVyEIemfSwZ4",
-  authDomain: "togareloctock1.firebaseapp.com",
-  projectId: "togareloctock1",
-  storageBucket: "togareloctock1.firebasestorage.app",
-  messagingSenderId: "693317989397",
-  appId: "1:693317989397:web:d5c5cffb30311ba92aca1c",
-  measurementId: "G-DK722FT6L5"
-};
-
-const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
-
-const form = document.getElementById("messageForm");
-const messagesDiv = document.getElementById("messages");
-
-form.addEventListener("submit", async (e) => {
-  e.preventDefault();
-  const phone = document.getElementById("phone").value.trim();
-  const content = document.getElementById("content").value.trim();
-
-  if (!phone || !content) return alert("من فضلك أدخل كل البيانات");
-
-  await addDoc(collection(db, "messages"), {
-    phone,
-    content,
-    timestamp: serverTimestamp()
-  });
-
-  form.reset();
-});
-
-const q = query(collection(db, "messages"), orderBy("timestamp", "desc"));
-onSnapshot(q, (snapshot) => {
-  messagesDiv.innerHTML = "";
-  snapshot.forEach(docSnap => {
-    const data = docSnap.data();
-    const msgDiv = document.createElement("div");
-    msgDiv.innerHTML = `
-      <strong>${data.phone}</strong> - 
-      ${new Date(data.timestamp?.seconds * 1000).toLocaleString()}<br>
-      ${data.content}
-    `;
-
-    // لو رقم الهاتف الحالي هو نفس اللي كتب الرسالة → أظهر زر حذف
-    const currentPhone = document.getElementById("phone").value.trim();
-    if (data.phone === currentPhone) {
-      const delBtn = document.createElement("button");
-      delBtn.textContent = "🗑️ حذف";
-      delBtn.style.marginTop = "5px";
-      delBtn.onclick = async () => {
-        if (confirm("هل تريد حذف الرسالة؟")) {
-          await deleteDoc(doc(db, "messages", docSnap.id));
-        }
-      };
-      msgDiv.appendChild(delBtn);
-    }
-
-    messagesDiv.appendChild(msgDiv);
-  });
-});
-</script>
-
     <style>
         * {
             box-sizing: border-box;
@@ -173,27 +105,24 @@ onSnapshot(q, (snapshot) => {
             background: #fff;
             padding: 10px;
             display: flex;
-            flex-direction: column;
+            flex-direction: row;
+            align-items: center;
             border-top: 1px solid #ccc;
         }
 
-        #messageForm input,
         #messageForm textarea {
+            flex: 1;
             padding: 10px;
-            margin-bottom: 8px;
             border-radius: 5px;
             border: 1px solid #ccc;
             font-size: 16px;
-            width: 100%;
-        }
-
-        #messageForm textarea {
             resize: none;
-            height: 60px;
+            height: 45px;
+            margin-right: 10px;
         }
 
         #messageForm button {
-            padding: 12px;
+            padding: 10px 15px;
             background: #25D366;
             color: white;
             border: none;
@@ -202,15 +131,10 @@ onSnapshot(q, (snapshot) => {
             font-size: 16px;
         }
 
-        h2, h3 {
-            display: none;
-        }
-
         @media (max-width: 600px) {
             .message {
                 font-size: 14px;
             }
-            #messageForm input,
             #messageForm textarea,
             #messageForm button {
                 font-size: 14px;
@@ -222,9 +146,8 @@ onSnapshot(q, (snapshot) => {
     <div id="messages"></div>
 
     <form id="messageForm">
-        <input type="text" id="phone" placeholder="رقم التليفون" required>
         <textarea id="content" placeholder="اكتب رسالتك..." required></textarea>
-        <button type="submit">إرسال</button>
+        <button type="submit">📨</button>
     </form>
 </body>
 </html>
