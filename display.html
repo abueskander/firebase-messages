@@ -9,32 +9,40 @@
       font-family: 'Cairo', sans-serif;
       background: #f1f1f1;
       direction: rtl;
-      padding: 20px;
+      padding: 10px;
+      margin: 0;
     }
     h2 {
       text-align: center;
       color: #00796b;
-      margin-bottom: 30px;
+      margin-bottom: 20px;
+      font-size: 24px;
+      font-weight: bold;
+      background: #ffffff;
+      padding: 10px;
+      border-radius: 10px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
     }
     .filters {
-      max-width: 700px;
-      margin: 0 auto 30px;
       display: flex;
-      gap: 10px;
       flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 20px;
+      justify-content: center;
+      position: relative;
     }
     .filters input, .filters select {
-      flex: 1;
-      padding: 10px;
-      font-size: 16px;
+      padding: 8px;
+      font-size: 14px;
       border-radius: 8px;
       border: 1px solid #ccc;
+      flex: 1;
+      min-width: 100px;
     }
     .hint {
       text-align: center;
-      margin-top: -10px;
       margin-bottom: 20px;
-      font-size: 15px;
+      font-size: 14px;
       color: #555;
     }
     .card {
@@ -43,6 +51,29 @@
       padding: 15px;
       margin-bottom: 20px;
       box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      overflow: hidden;
+    }
+    .card.collapsed {
+      max-height: 150px;
+      position: relative;
+    }
+    .card.collapsed::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 50px;
+      background: linear-gradient(to top, white, transparent);
+    }
+    .card .more-btn {
+      background-color: #00796b;
+      color: white;
+      border: none;
+      padding: 5px 10px;
+      border-radius: 5px;
+      cursor: pointer;
+      margin-top: 10px;
     }
     .card h3 {
       margin: 0 0 10px;
@@ -51,22 +82,89 @@
     .card p {
       margin: 5px 0;
     }
+    .fab-button {
+      position: fixed;
+      bottom: 20px;
+      left: 20px;
+      background-color: #00796b;
+      color: white;
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      font-size: 30px;
+      text-align: center;
+      line-height: 50px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+      cursor: pointer;
+    }
+    .fab-menu {
+      position: fixed;
+      bottom: 80px;
+      left: 20px;
+      font-size: 14px;
+    }
+    .fab-menu a {
+      display: block;
+      margin-bottom: 10px;
+      color: #00796b;
+      text-decoration: none;
+    }
+    .home-link {
+      text-align: center;
+      margin: 20px 0;
+    }
+    .home-link a, .home-inline-link {
+      background-color: #00796b;
+      color: white;
+      padding: 10px 20px;
+      border-radius: 8px;
+      text-decoration: none;
+      font-weight: bold;
+      display: inline-block;
+      margin-top: 10px;
+    }
+    .home-inline-link {
+      display: inline-block;
+      margin-bottom: 15px;
+    }
+    .top-buttons {
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+    .top-buttons a {
+      background-color: #00796b;
+      color: white;
+      padding: 8px 12px;
+      border-radius: 8px;
+      text-decoration: none;
+      font-size: 14px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    }
   </style>
 </head>
 <body>
 
-<h2>📋 قائمة التجار</h2>
+<h2>📞 أرقام وعناوين تجار الاستوكات 🛍️</h2>
+
+<div class="top-buttons">
+  <a href="https://abueskander.github.io/firebase-messages/index.html">الرجوع</a>
+  <a href="https://abueskander.github.io/firebase-messages/message.html" target="_blank">💬 المجتمع</a>
+</div>
 
 <div class="filters">
-  <input type="text" id="govFilter" placeholder="اكتب اسم المحافظة">
-  <select id="categoryFilter">
-    <option value="">كل الأصناف</option>
-    <option value="باله">🧥 باله</option>
-    <option value="استوك">📦 استوك</option>
-    <option value="سيلر">👜👠💄 سيلر</option>
+  <input type="text" id="govFilter" placeholder="اكتب اسم المحافظة" style="max-width: 120px;">
+  <input type="text" id="brandFilter" placeholder="🔍 البحث عن ماركة" style="max-width: 150px;">
+  <select id="categoryFilter" style="max-width: 150px;">
+    <option value="">باله ولا استوك </option>
+    <option value="باله">📦باله</option>
+    <option value="استوك">🧥استوك</option>
+    <option value="سيلر">سيلر ومواقع</option>
   </select>
-  <select id="weightFilter">
-    <option value="">كل الأوزان</option>
+  <select id="weightFilter" style="max-width: 120px;">
+    <option value="">كميه </option>
+    <option value="قطاعي">قطاعي</option>
     <option value="5">5 كجم</option>
     <option value="10">10 كجم</option>
     <option value="25">25 كجم</option>
@@ -79,12 +177,16 @@
 
 <div id="tradersContainer"></div>
 
+<div class="fab-button" onclick="window.open('https://wa.me/+201021205253','_blank')">+</div>
+<div class="fab-menu"><a href="https://wa.me/+201021205253" target="_blank">إضافة تاجر</a></div>
+
 <script type="module">
   import { db } from './firebase-config.js';
   import { collection, getDocs, orderBy, query } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
   const container = document.getElementById('tradersContainer');
   const govFilter = document.getElementById('govFilter');
+  const brandFilter = document.getElementById('brandFilter');
   const categoryFilter = document.getElementById('categoryFilter');
   const weightFilter = document.getElementById('weightFilter');
   const hintText = document.getElementById('hintText');
@@ -117,7 +219,8 @@
 
   const displayTraders = () => {
     const govValue = govFilter.value.trim().toLowerCase();
-    const categoryValue = categoryFilter.value;
+    const brandValue = brandFilter.value.trim().toLowerCase();
+    const categoryValue = categoryFilter.value.trim();
     const weightValue = weightFilter.value;
 
     displayHint(categoryValue);
@@ -126,13 +229,14 @@
     allTraders
       .filter(trader => {
         const govMatch = trader.gov?.toLowerCase().includes(govValue);
+        const brandMatch = brandValue ? trader.name?.toLowerCase().includes(brandValue) : true;
         const categoryMatch = categoryValue ? trader.category === categoryValue : true;
         const weightMatch = weightValue ? trader.retail === weightValue : true;
-        return govMatch && categoryMatch && weightMatch;
+        return govMatch && brandMatch && categoryMatch && weightMatch;
       })
       .forEach(data => {
         const card = document.createElement("div");
-        card.className = "card";
+        card.className = "card collapsed";
         card.innerHTML = `
           <h3>${data.name || 'بدون اسم'}</h3>
           <p><strong>📍 المحافظة:</strong> ${data.gov || '-'}</p>
@@ -144,12 +248,14 @@
           <p><strong>💼 النشاط:</strong> ${data.activity || '-'}</p>
           <p><strong>👥 جروب الفيس:</strong> <a href="${data.facebookGroup || '#'}" target="_blank">${data.facebookGroup || '-'}</a></p>
           <p><strong>⚖️ الوزن:</strong> ${data.retail || '-'}</p>
+          <button class="more-btn" onclick="this.parentElement.classList.remove('collapsed'); this.remove();">عرض المزيد</button>
         `;
         container.appendChild(card);
       });
   };
 
   govFilter.addEventListener('input', displayTraders);
+  brandFilter.addEventListener('input', displayTraders);
   categoryFilter.addEventListener('change', displayTraders);
   weightFilter.addEventListener('change', displayTraders);
 
