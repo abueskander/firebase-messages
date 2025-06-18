@@ -49,42 +49,53 @@
     <h3>الرسائل:</h3>
     <div id="messages"></div>
 
-    <script src="firebase-config.js"></script>
     <script>
-        const db = firebase.firestore();
-        const form = document.getElementById('messageForm');
-        const messagesDiv = document.getElementById('messages');
+      // Firebase configuration
+      const firebaseConfig = {
+        apiKey: "AIzaSyCIuNrBGfVLKL-Rd1eHBSJAVyEIemfSwZ4",
+        authDomain: "togareloctock1.firebaseapp.com",
+        projectId: "togareloctock1",
+        storageBucket: "togareloctock1.firebasestorage.app",
+        messagingSenderId: "693317989397",
+        appId: "1:693317989397:web:d5c5cffb30311ba92aca1c",
+        measurementId: "G-DK722FT6L5"
+      };
 
-        form.addEventListener('submit', async (e) => {
-            e.preventDefault();
-            const phone = document.getElementById('phone').value;
-            const content = document.getElementById('content').value;
-            const timestamp = new Date();
+      // Initialize Firebase
+      firebase.initializeApp(firebaseConfig);
+      const db = firebase.firestore();
 
-            await db.collection('messages').add({
-                phone,
-                content,
-                timestamp
-            });
+      const messageForm = document.getElementById("messageForm");
+      const phoneInput = document.getElementById("phone");
+      const contentInput = document.getElementById("content");
+      const messagesDiv = document.getElementById("messages");
 
-            form.reset();
+      messageForm.addEventListener("submit", async (e) => {
+        e.preventDefault();
+        const phone = phoneInput.value;
+        const content = contentInput.value;
+        const timestamp = new Date();
+
+        await db.collection("messages").add({
+          phone,
+          content,
+          timestamp
         });
 
-        function renderMessages() {
-            db.collection('messages').orderBy('timestamp', 'desc')
-              .onSnapshot(snapshot => {
-                messagesDiv.innerHTML = '';
-                snapshot.forEach(doc => {
-                    const data = doc.data();
-                    const msgEl = document.createElement('div');
-                    const time = new Date(data.timestamp.seconds * 1000).toLocaleString();
-                    msgEl.textContent = `${data.phone} - ${time}: ${data.content}`;
-                    messagesDiv.appendChild(msgEl);
-                });
-            });
-        }
+        phoneInput.value = "";
+        contentInput.value = "";
+      });
 
-        renderMessages();
+      db.collection("messages").orderBy("timestamp", "desc").onSnapshot((snapshot) => {
+        messagesDiv.innerHTML = "";
+        snapshot.forEach((doc) => {
+          const msg = doc.data();
+          const div = document.createElement("div");
+          const date = msg.timestamp?.toDate?.().toLocaleString() || "";
+          div.innerHTML = `<strong>${msg.phone}</strong><br>${msg.content}<br><small>${date}</small>`;
+          messagesDiv.appendChild(div);
+        });
+      });
     </script>
 </body>
 </html>
