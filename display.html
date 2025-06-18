@@ -153,11 +153,33 @@
       margin-top: 3px;
       color: #000;
     }
+    #scrollTopBtn {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 999;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      padding: 12px 18px;
+      border-radius: 30px;
+      font-size: 20px;
+      cursor: pointer;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+      animation: pulse 1.5s infinite;
+    }
+    .highlight {
+      border: 2px solid red;
+      box-shadow: 0 0 8px red;
+    }
   </style>
 </head>
 <body>
 
 <h2>📞 أرقام وعناوين تجار الاستوكات 🛍️</h2>
+
+<button id="scrollTopBtn">🔍 البحث</button>
 
 <div class="top-buttons">
   <a href="https://abueskander.github.io/firebase-messages/index.html">الرجوع</a>
@@ -205,6 +227,7 @@
   const categoryFilter = document.getElementById('categoryFilter');
   const weightFilter = document.getElementById('weightFilter');
   const hintText = document.getElementById('hintText');
+  const scrollTopBtn = document.getElementById('scrollTopBtn');
 
   let allTraders = [];
 
@@ -267,6 +290,12 @@
         container.appendChild(card);
       });
   };
+
+  scrollTopBtn.addEventListener('click', () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    govFilter.classList.add('highlight');
+    setTimeout(() => govFilter.classList.remove('highlight'), 1500);
+  });
 
   govFilter.addEventListener('input', displayTraders);
   brandFilter.addEventListener('input', displayTraders);
