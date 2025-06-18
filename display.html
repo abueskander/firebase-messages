@@ -55,17 +55,6 @@
       color: #ffffff;
       position: relative;
     }
-    .card .more-btn {
-      background-color: #25d366;
-      color: white;
-      border: none;
-      padding: 6px 14px;
-      border-radius: 5px;
-      cursor: pointer;
-      margin-top: 10px;
-      font-weight: bold;
-      font-size: 16px;
-    }
     .card h3 {
       margin: 0 0 10px;
       color: #ffffff;
@@ -163,10 +152,18 @@
     window.toggleFabMenu = function() {
       const menu = document.getElementById('fabMenu');
       menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
+      if (menu.style.display === 'block') {
+        setTimeout(() => {
+          menu.style.display = 'none';
+        }, 4000);
+      }
     };
 
     window.scrollToTop = function() {
       window.scrollTo({ top: 0, behavior: 'smooth' });
+      const govFilter = document.getElementById('govFilter');
+      govFilter.classList.add('highlight');
+      setTimeout(() => govFilter.classList.remove('highlight'), 2000);
     };
   </script>
 </head>
@@ -175,7 +172,7 @@
 <h2>📞 أرقام وعناوين تجار الاستوكات 🛍️</h2>
 
 <div class="top-buttons">
-  <a href="https://abueskander.github.io/firebase-messages/index.html">الرجوع</a>
+  <a href="https://abueskander.github.io/firebase-messages/index.html">الرئيسية</a>
   <a href="https://abueskander.github.io/firebase-messages/message.html" target="_blank">💬 المجتمع</a>
 </div>
 
@@ -211,6 +208,10 @@
   <a href="https://wa.me/+201021205253" target="_blank">
     إضافة تاجر
     <span>📤 اضغط وأرسل بيانات تاجر</span>
+  </a>
+  <a href="https://abueskander.github.io/firebase-messages/index.html">
+    الرئيسية
+    <span>🏠 صفحة البداية</span>
   </a>
 </div>
 
