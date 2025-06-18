@@ -129,6 +129,11 @@
       color: #000;
     }
   </style>
+ <!-- Firebase App (core SDK) -->
+<script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
+<!-- Firebase Firestore -->
+<script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js"></script>
+
   <script>
     let menuTimeout;
     function toggleFabMenu() {
@@ -314,6 +319,27 @@
       }
     }
   };
+</script>
+<script>
+  // إعداد الاتصال بـ Firebase
+  const firebaseConfig = {
+    apiKey: "AIzaSyCIuNrBGfVLKL-Rd1eHBSJAVyEIemfSwZ4",
+    authDomain: "togareloctock1.firebaseapp.com",
+    projectId: "togareloctock1",
+    storageBucket: "togareloctock1.firebasestorage.app",
+    messagingSenderId: "693317989397",
+    appId: "1:693317989397:web:d5c5cffb30311ba92aca1c",
+    measurementId: "G-DK722FT6L5"
+  };
+
+  // تهيئة Firebase
+  const app = firebase.initializeApp(firebaseConfig);
+
+  // Firestore
+  const db = firebase.firestore();
+
+  // Analytics (اختياري)
+  const analytics = firebase.analytics();
 </script>
 
 </body>
