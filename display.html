@@ -241,8 +241,7 @@
   const loadTraders = async () => {
     const q = query(collection(db, "traders"), orderBy("createdAt", "desc"));
     const snapshot = await getDocs(q);
-    allTraders = [];
-    snapshot.forEach(doc => allTraders.push(doc.data()));
+    allTraders = snapshot.docs.map(doc => doc.data());
     displayTraders();
   };
 
@@ -260,13 +259,13 @@
       default:
         hintText.textContent = '';
     }
-  }
+  };
 
   const displayTraders = () => {
     const govValue = govFilter.value.trim().toLowerCase();
     const brandValue = brandFilter.value.trim().toLowerCase();
     const categoryValue = categoryFilter.value.trim();
-    const weightValue = weightFilter.value;
+    const weightValue = weightFilter.value.trim();
 
     displayHint(categoryValue);
 
