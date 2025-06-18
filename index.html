@@ -2,6 +2,7 @@
 <html lang="ar">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>رسائل المستخدمين</title>
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
@@ -62,6 +63,10 @@
         });
     </script>
     <style>
+        * {
+            box-sizing: border-box;
+        }
+
         body {
             font-family: sans-serif;
             background: #e5ddd5;
@@ -84,6 +89,7 @@
             margin-bottom: 10px;
             border-radius: 8px;
             position: relative;
+            word-wrap: break-word;
         }
 
         .reactions {
@@ -104,24 +110,44 @@
             border-top: 1px solid #ccc;
         }
 
-        #messageForm input, #messageForm textarea {
-            padding: 8px;
+        #messageForm input,
+        #messageForm textarea {
+            padding: 10px;
             margin-bottom: 8px;
             border-radius: 5px;
             border: 1px solid #ccc;
+            font-size: 16px;
+            width: 100%;
+        }
+
+        #messageForm textarea {
+            resize: none;
+            height: 60px;
         }
 
         #messageForm button {
-            padding: 10px;
+            padding: 12px;
             background: #25D366;
             color: white;
             border: none;
             border-radius: 5px;
             font-weight: bold;
+            font-size: 16px;
         }
 
         h2, h3 {
             display: none;
+        }
+
+        @media (max-width: 600px) {
+            .message {
+                font-size: 14px;
+            }
+            #messageForm input,
+            #messageForm textarea,
+            #messageForm button {
+                font-size: 14px;
+            }
         }
     </style>
 </head>
