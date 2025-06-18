@@ -36,12 +36,12 @@
             const content = contentInput.value.trim();
             if (content) {
                 await addDoc(collection(db, "messages"), {
-                    phone: "مستخدم مجهول",
+                    phone: "مستخدم عسول 😍",
                     content,
                     timestamp: serverTimestamp()
                 });
                 form.reset();
-                alert("من فضلك استخدم ميزة إرسال الرسائل بشكل محترم");
+                alert(" من فضلك استخدم ميزة إرسال الرسائل بشكل كويس بحيث اقدر اطور ولو عندك فكره اكتبها");
                 messageBox.classList.remove("visible");
             }
         });
@@ -59,9 +59,9 @@
                     <strong>${data.phone}</strong>: ${data.content}<br>
                     <small>${date}</small>
                     <div class="reactions">
-                        <span>👍</span>
-                        <span>❤️</span>
-                        <span>😂</span>
+                        <span>👍٩٥</span>
+                        <span>❤️٨٦</span>
+                        <span>😂٥٦٧</span>
                     </div>
                 `;
                 messagesDiv.appendChild(div);
@@ -177,7 +177,7 @@
     <div id="messageBox">
         <form id="messageForm">
             <textarea id="content" placeholder="اكتب رسالتك..." required></textarea>
-            <button type="submit">📨</button>
+            <button type="submit">ارسال</button>
         </form>
     </div>
 </body>
