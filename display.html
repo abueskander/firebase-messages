@@ -46,16 +46,17 @@
       color: #555;
     }
     .card {
-      background: white;
+      background: #075e54;
       border-radius: 12px;
       padding: 15px;
       margin-bottom: 20px;
       box-shadow: 0 4px 12px rgba(0,0,0,0.1);
       overflow: hidden;
+      color: #ffffff;
+      position: relative;
     }
     .card.collapsed {
-      max-height: 150px;
-      position: relative;
+      max-height: 160px;
     }
     .card.collapsed::after {
       content: '';
@@ -63,24 +64,29 @@
       bottom: 0;
       left: 0;
       right: 0;
-      height: 50px;
-      background: linear-gradient(to top, white, transparent);
+      height: 60px;
+      background: linear-gradient(to top, #075e54, transparent);
     }
     .card .more-btn {
-      background-color: #00796b;
+      background-color: #25d366;
       color: white;
       border: none;
-      padding: 5px 10px;
+      padding: 6px 14px;
       border-radius: 5px;
       cursor: pointer;
       margin-top: 10px;
+      font-weight: bold;
     }
     .card h3 {
       margin: 0 0 10px;
-      color: #00796b;
+      color: #ffffff;
+      font-size: 20px;
     }
-    .card p {
+    .card p, .card a {
       margin: 5px 0;
+      color: #e0f2f1;
+      font-size: 14px;
+      text-decoration: none;
     }
     .fab-button {
       position: fixed;
@@ -88,18 +94,24 @@
       left: 20px;
       background-color: #00796b;
       color: white;
-      width: 50px;
-      height: 50px;
+      width: 60px;
+      height: 60px;
       border-radius: 50%;
-      font-size: 30px;
+      font-size: 28px;
       text-align: center;
-      line-height: 50px;
+      line-height: 60px;
       box-shadow: 0 4px 10px rgba(0,0,0,0.3);
       cursor: pointer;
+      animation: pulse 2s infinite;
+    }
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.1); }
+      100% { transform: scale(1); }
     }
     .fab-menu {
       position: fixed;
-      bottom: 80px;
+      bottom: 90px;
       left: 20px;
       font-size: 14px;
     }
@@ -108,6 +120,10 @@
       margin-bottom: 10px;
       color: #00796b;
       text-decoration: none;
+      background-color: #ffffff;
+      padding: 8px 12px;
+      border-radius: 8px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.2);
     }
     .home-link {
       text-align: center;
@@ -142,6 +158,12 @@
       font-size: 14px;
       box-shadow: 0 2px 5px rgba(0,0,0,0.2);
     }
+    .fab-menu a span {
+      display: block;
+      font-size: 12px;
+      margin-top: 3px;
+      color: #000;
+    }
   </style>
 </head>
 <body>
@@ -174,11 +196,15 @@
 </div>
 
 <div class="hint" id="hintText"></div>
-
 <div id="tradersContainer"></div>
 
 <div class="fab-button" onclick="window.open('https://wa.me/+201021205253','_blank')">+</div>
-<div class="fab-menu"><a href="https://wa.me/+201021205253" target="_blank">إضافة تاجر</a></div>
+<div class="fab-menu">
+  <a href="https://wa.me/+201021205253" target="_blank">
+    إضافة تاجر
+    <span>📤 اضغط وأرسل بيانات تاجر</span>
+  </a>
+</div>
 
 <script type="module">
   import { db } from './firebase-config.js';
