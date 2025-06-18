@@ -29,8 +29,6 @@
         const messageBox = document.getElementById("messageBox");
         const openFormBtn = document.getElementById("openFormBtn");
 
-        let alertShown = false;
-
         openFormBtn.addEventListener("click", () => {
             messageBox.classList.toggle("visible");
             contentInput.focus();
@@ -70,11 +68,6 @@
                 messagesDiv.appendChild(div);
             });
             messagesDiv.scrollTop = messagesDiv.scrollHeight;
-
-            if (!alertShown) {
-                alert(" من فضلك استخدم ميزة إرسال الرسائل بشكل كويس بحيث اقدر اطور ولو عندك فكره اكتبها");
-                alertShown = true;
-            }
         });
     </script>
     <style>
@@ -133,6 +126,10 @@
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
             cursor: pointer;
             z-index: 999;
+        }
+
+        #openFormBtn::after {
+            content: ' النشر في المجتمع';
         }
 
         #messageBox {
@@ -206,6 +203,6 @@
         </form>
     </div>
 
-    <button id="openFormBtn">📝 إرسال رسالة</button>
+    <button id="openFormBtn">📝</button>
 </body>
 </html>
