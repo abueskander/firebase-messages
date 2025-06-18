@@ -221,7 +221,19 @@
         #messageForm button:hover {
             background: #1ebe5d;
         }
+        #chatLogo {
+    position: fixed;
+    bottom: 10px;
+    right: 10px;
+    width: 50px;
+    height: 50px;
+    border-radius: 12px;
+    box-shadow: 0 0 8px rgba(0,0,0,0.3);
+    z-index: 998;
+}
+
     </style>
+    
 </head>
 <body>
     <div id="messages"></div>
@@ -234,6 +246,9 @@
     </div>
 
     <button id="openFormBtn">📝</button>
-    <button id="refreshBtn">تحديث الصفحة</button>
+    
+<button id="refreshBtn">تحديث الصفحة</button>
+    <img src="https://abueskander.github.io/firebase-messages/FB_IMG_1750277736215.jpg" alt="لوجو" id="chatLogo">
+
 </body>
 </html>
