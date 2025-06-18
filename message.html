@@ -21,13 +21,14 @@
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
 
-        const names = ["مستخدم جديد", "تاجر", "طلب ثانويه عامه", "مدير شركه", "استاذ", "BOSS.", "العسل"];
+        const names = [" الله اكبر", "لا حول ولا قوه الا بالله", "سبحان الله وبحمده", "الحمد لله", "اللهم صلي على محمد", "لا اله الاالله.", "وحد الله"];
 
         const form = document.getElementById("messageForm");
         const contentInput = document.getElementById("content");
         const messagesDiv = document.getElementById("messages");
         const messageBox = document.getElementById("messageBox");
         const openFormBtn = document.getElementById("openFormBtn");
+        const refreshBtn = document.getElementById("refreshBtn");
 
         openFormBtn.addEventListener("click", () => {
             messageBox.classList.toggle("visible");
@@ -49,16 +50,27 @@
             }
         });
 
+        function timeAgo(date) {
+            const now = new Date();
+            const seconds = Math.floor((now - date) / 1000);
+            if (seconds < 60) return 'الآن';
+            const minutes = Math.floor(seconds / 60);
+            if (minutes < 60) return `منذ ${minutes} دقيقة`;
+            const hours = Math.floor(minutes / 60);
+            if (hours < 24) return `منذ ${hours} ساعة`;
+            const days = Math.floor(hours / 24);
+            return `منذ ${days} يوم`;
+        }
+
         const q = query(collection(db, "messages"), orderBy("timestamp", "asc"));
         onSnapshot(q, (snapshot) => {
             messagesDiv.innerHTML = "";
-            snapshot.forEach((doc, index) => {
+            snapshot.forEach((doc) => {
                 const data = doc.data();
                 const dateObj = data.timestamp?.toDate();
-                const date = dateObj ? dateObj.toLocaleDateString('ar-EG', { day: 'numeric', month: 'long', year: 'numeric' }) + '، ' + dateObj.toLocaleTimeString('ar-EG', { hour: 'numeric', minute: 'numeric' }) : "جارٍ التحميل...";
+                const date = dateObj ? timeAgo(dateObj) : "جارٍ التحميل...";
                 const div = document.createElement("div");
                 div.classList.add("message");
-
                 div.innerHTML = `
                     <div class="message-box">
                         <strong>${data.phone}</strong>: ${data.content}<br>
@@ -68,6 +80,10 @@
                 messagesDiv.appendChild(div);
             });
             messagesDiv.scrollTop = messagesDiv.scrollHeight;
+        });
+
+        refreshBtn.addEventListener("click", () => {
+            location.reload();
         });
     </script>
     <style>
@@ -130,6 +146,20 @@
 
         #openFormBtn::after {
             content: ' النشر في المجتمع';
+        }
+
+        #refreshBtn {
+            position: fixed;
+            bottom: 60px;
+            left: 20px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 25px;
+            padding: 10px 16px;
+            font-size: 14px;
+            cursor: pointer;
+            z-index: 999;
         }
 
         #messageBox {
@@ -204,5 +234,6 @@
     </div>
 
     <button id="openFormBtn">📝</button>
+    <button id="refreshBtn">تحديث الصفحة</button>
 </body>
 </html>
