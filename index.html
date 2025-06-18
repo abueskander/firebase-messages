@@ -62,6 +62,73 @@
             });
         });
     </script>
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getFirestore, collection, addDoc, onSnapshot, deleteDoc, doc, serverTimestamp, query, orderBy } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyCIuNrBGfVLKL-Rd1eHBSJAVyEIemfSwZ4",
+  authDomain: "togareloctock1.firebaseapp.com",
+  projectId: "togareloctock1",
+  storageBucket: "togareloctock1.firebasestorage.app",
+  messagingSenderId: "693317989397",
+  appId: "1:693317989397:web:d5c5cffb30311ba92aca1c",
+  measurementId: "G-DK722FT6L5"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+const form = document.getElementById("messageForm");
+const messagesDiv = document.getElementById("messages");
+
+form.addEventListener("submit", async (e) => {
+  e.preventDefault();
+  const phone = document.getElementById("phone").value.trim();
+  const content = document.getElementById("content").value.trim();
+
+  if (!phone || !content) return alert("من فضلك أدخل كل البيانات");
+
+  await addDoc(collection(db, "messages"), {
+    phone,
+    content,
+    timestamp: serverTimestamp()
+  });
+
+  form.reset();
+});
+
+const q = query(collection(db, "messages"), orderBy("timestamp", "desc"));
+onSnapshot(q, (snapshot) => {
+  messagesDiv.innerHTML = "";
+  snapshot.forEach(docSnap => {
+    const data = docSnap.data();
+    const msgDiv = document.createElement("div");
+    msgDiv.innerHTML = `
+      <strong>${data.phone}</strong> - 
+      ${new Date(data.timestamp?.seconds * 1000).toLocaleString()}<br>
+      ${data.content}
+    `;
+
+    // لو رقم الهاتف الحالي هو نفس اللي كتب الرسالة → أظهر زر حذف
+    const currentPhone = document.getElementById("phone").value.trim();
+    if (data.phone === currentPhone) {
+      const delBtn = document.createElement("button");
+      delBtn.textContent = "🗑️ حذف";
+      delBtn.style.marginTop = "5px";
+      delBtn.onclick = async () => {
+        if (confirm("هل تريد حذف الرسالة؟")) {
+          await deleteDoc(doc(db, "messages", docSnap.id));
+        }
+      };
+      msgDiv.appendChild(delBtn);
+    }
+
+    messagesDiv.appendChild(msgDiv);
+  });
+});
+</script>
+
     <style>
         * {
             box-sizing: border-box;
