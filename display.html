@@ -16,6 +16,27 @@
       color: #00796b;
       margin-bottom: 30px;
     }
+    .filters {
+      max-width: 700px;
+      margin: 0 auto 30px;
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    .filters input, .filters select {
+      flex: 1;
+      padding: 10px;
+      font-size: 16px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+    }
+    .hint {
+      text-align: center;
+      margin-top: -10px;
+      margin-bottom: 20px;
+      font-size: 15px;
+      color: #555;
+    }
     .card {
       background: white;
       border-radius: 12px;
@@ -36,6 +57,26 @@
 
 <h2>📋 قائمة التجار</h2>
 
+<div class="filters">
+  <input type="text" id="govFilter" placeholder="اكتب اسم المحافظة">
+  <select id="categoryFilter">
+    <option value="">كل الأصناف</option>
+    <option value="باله">🧥 باله</option>
+    <option value="استوك">📦 استوك</option>
+    <option value="سيلر">👜👠💄 سيلر</option>
+  </select>
+  <select id="weightFilter">
+    <option value="">كل الأوزان</option>
+    <option value="5">5 كجم</option>
+    <option value="10">10 كجم</option>
+    <option value="25">25 كجم</option>
+    <option value="100">100 كجم</option>
+    <option value=">100">أكثر من 100 كجم</option>
+  </select>
+</div>
+
+<div class="hint" id="hintText"></div>
+
 <div id="tradersContainer"></div>
 
 <script type="module">
@@ -43,29 +84,76 @@
   import { collection, getDocs, orderBy, query } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
   const container = document.getElementById('tradersContainer');
+  const govFilter = document.getElementById('govFilter');
+  const categoryFilter = document.getElementById('categoryFilter');
+  const weightFilter = document.getElementById('weightFilter');
+  const hintText = document.getElementById('hintText');
 
-  const q = query(collection(db, "traders"), orderBy("createdAt", "desc"));
-  const snapshot = await getDocs(q);
+  let allTraders = [];
 
-  snapshot.forEach(doc => {
-    const data = doc.data();
+  const loadTraders = async () => {
+    const q = query(collection(db, "traders"), orderBy("createdAt", "desc"));
+    const snapshot = await getDocs(q);
+    allTraders = [];
+    snapshot.forEach(doc => allTraders.push(doc.data()));
+    displayTraders();
+  };
 
-    const card = document.createElement("div");
-    card.className = "card";
-    card.innerHTML = `
-      <h3>${data.name || 'بدون اسم'}</h3>
-      <p><strong>📍 المحافظة:</strong> ${data.gov || '-'}</p>
-      <p><strong>📦 الصنف:</strong> ${data.category || '-'}</p>
-      <p><strong>📱 واتساب:</strong> ${data.whatsapp || '-'}</p>
-      <p><strong>🌐 تواصل:</strong> <a href="${data.contact || '#'}" target="_blank">${data.contact || '-'}</a></p>
-      <p><strong>🏠 العنوان:</strong> ${data.address || '-'}</p>
-      <p><strong>🏪 الفروع:</strong> ${data.branches || '-'}</p>
-      <p><strong>💼 النشاط:</strong> ${data.activity || '-'}</p>
-      <p><strong>👥 جروب الفيس:</strong> <a href="${data.facebookGroup || '#'}" target="_blank">${data.facebookGroup || '-'}</a></p>
-      <p><strong>🛒 قطاعي:</strong> ${data.retail || '-'}</p>
-    `;
-    container.appendChild(card);
-  });
+  const displayHint = (value) => {
+    switch(value) {
+      case 'باله':
+        hintText.textContent = '🧥 يعرض فقط تجار الباله (الملابس المستعملة)';
+        break;
+      case 'استوك':
+        hintText.textContent = '📦 يعرض فقط تجار الاستوكات (بضائع زائدة من الماركات)';
+        break;
+      case 'سيلر':
+        hintText.textContent = '👜👠💄 يعرض سيلر المواقع مثل شي إن وسيلر المتاجر الإلكترونية';
+        break;
+      default:
+        hintText.textContent = '';
+    }
+  }
+
+  const displayTraders = () => {
+    const govValue = govFilter.value.trim().toLowerCase();
+    const categoryValue = categoryFilter.value;
+    const weightValue = weightFilter.value;
+
+    displayHint(categoryValue);
+
+    container.innerHTML = '';
+    allTraders
+      .filter(trader => {
+        const govMatch = trader.gov?.toLowerCase().includes(govValue);
+        const categoryMatch = categoryValue ? trader.category === categoryValue : true;
+        const weightMatch = weightValue ? trader.retail === weightValue : true;
+        return govMatch && categoryMatch && weightMatch;
+      })
+      .forEach(data => {
+        const card = document.createElement("div");
+        card.className = "card";
+        card.innerHTML = `
+          <h3>${data.name || 'بدون اسم'}</h3>
+          <p><strong>📍 المحافظة:</strong> ${data.gov || '-'}</p>
+          <p><strong>📦 الصنف:</strong> ${data.category || '-'}</p>
+          <p><strong>📱 واتساب:</strong> ${data.whatsapp || '-'}</p>
+          <p><strong>🌐 تواصل:</strong> <a href="${data.contact || '#'}" target="_blank">${data.contact || '-'}</a></p>
+          <p><strong>🏠 العنوان:</strong> ${data.address || '-'}</p>
+          <p><strong>🏪 الفروع:</strong> ${data.branches || '-'}</p>
+          <p><strong>💼 النشاط:</strong> ${data.activity || '-'}</p>
+          <p><strong>👥 جروب الفيس:</strong> <a href="${data.facebookGroup || '#'}" target="_blank">${data.facebookGroup || '-'}</a></p>
+          <p><strong>⚖️ الوزن:</strong> ${data.retail || '-'}</p>
+        `;
+        container.appendChild(card);
+      });
+  };
+
+  govFilter.addEventListener('input', displayTraders);
+  categoryFilter.addEventListener('change', displayTraders);
+  weightFilter.addEventListener('change', displayTraders);
+
+  loadTraders();
 </script>
 
 </body>
