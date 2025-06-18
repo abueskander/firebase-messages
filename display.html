@@ -6,97 +6,152 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <style>
     body {
-      font-family: 'Arial', sans-serif;
-      background-color: #f5f5f5;
-      margin: 0;
-      padding: 0;
+      font-family: 'Cairo', sans-serif;
+      background: #f1f1f1;
       direction: rtl;
-      text-align: right;
-    }
-    h2 {
-      background-color: #007bff;
-      color: white;
       padding: 10px;
       margin: 0;
     }
-    .top-buttons {
-      display: flex;
-      justify-content: center;
-      gap: 10px;
-      margin: 10px;
-    }
-    .top-buttons a {
-      text-decoration: none;
-      color: white;
-      background-color: #28a745;
-      padding: 10px 15px;
-      border-radius: 5px;
+    h2 {
+      text-align: center;
+      color: #00796b;
+      margin-bottom: 20px;
+      font-size: 24px;
+      font-weight: bold;
+      background: #ffffff;
+      padding: 10px;
+      border-radius: 10px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
     }
     .filters {
       display: flex;
       flex-wrap: wrap;
       gap: 10px;
-      padding: 10px;
-      background-color: #e9ecef;
+      margin-bottom: 20px;
       justify-content: center;
     }
-    input, select {
+    .filters input, .filters select {
       padding: 8px;
-      border-radius: 4px;
+      font-size: 14px;
+      border-radius: 8px;
       border: 1px solid #ccc;
+      flex: 1;
+      min-width: 100px;
+      transition: border-color 0.3s;
+    }
+    .highlight {
+      border: 2px solid red !important;
+    }
+    .hint {
+      text-align: center;
+      margin-bottom: 20px;
+      font-size: 14px;
+      color: #555;
     }
     .card {
-      background-color: white;
+      background: #075e54;
+      border-radius: 12px;
       padding: 15px;
-      margin: 10px;
-      border-radius: 8px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      margin-bottom: 20px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      overflow: hidden;
+      color: #ffffff;
+      position: relative;
+    }
+    .card h3 {
+      margin: 0 0 10px;
+      color: #ffffff;
+      font-size: 24px;
+    }
+    .card p, .card a {
+      margin: 8px 0;
+      color: #e0f2f1;
+      font-size: 20px;
+      text-decoration: none;
     }
     .fab-button {
       position: fixed;
       bottom: 20px;
       left: 20px;
-      background-color: #007bff;
+      background-color: #00796b;
       color: white;
+      width: 60px;
+      height: 60px;
       border-radius: 50%;
-      width: 50px;
-      height: 50px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 24px;
+      font-size: 28px;
+      text-align: center;
+      line-height: 60px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.3);
       cursor: pointer;
-      z-index: 1000;
+      animation: pulse 2s infinite;
+    }
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.1); }
+      100% { transform: scale(1); }
     }
     .fab-menu {
-      position: fixed;
-      bottom: 80px;
-      left: 20px;
       display: none;
-      flex-direction: column;
-      gap: 10px;
-      z-index: 1000;
+      position: fixed;
+      bottom: 90px;
+      left: 20px;
+      font-size: 14px;
     }
     .fab-menu a {
-      background-color: #6c757d;
+      display: block;
+      margin-bottom: 10px;
+      color: #00796b;
+      text-decoration: none;
+      background-color: #ffffff;
+      padding: 8px 12px;
+      border-radius: 8px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    }
+    .top-buttons {
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+    .top-buttons a {
+      background-color: #00796b;
       color: white;
-      padding: 10px;
-      border-radius: 5px;
+      padding: 8px 12px;
+      border-radius: 8px;
       text-decoration: none;
       font-size: 14px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.2);
     }
     .fab-menu a span {
       display: block;
       font-size: 12px;
-    }
-    .hint {
-      text-align: center;
-      margin: 10px;
-      font-style: italic;
-      color: #555;
+      margin-top: 3px;
+      color: #000;
     }
   </style>
-  <script type="module" src="display.js"></script>
+  <script>
+    let menuTimeout;
+    function toggleFabMenu() {
+      const menu = document.getElementById('fabMenu');
+      const isVisible = menu.style.display === 'block';
+      if (!isVisible) {
+        menu.style.display = 'block';
+        clearTimeout(menuTimeout);
+        menuTimeout = setTimeout(() => {
+          menu.style.display = 'none';
+        }, 4000);
+      } else {
+        menu.style.display = 'none';
+        clearTimeout(menuTimeout);
+      }
+    }
+    function scrollToSearch() {
+      const govInput = document.getElementById('govFilter');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      govInput.classList.add('highlight');
+      setTimeout(() => govInput.classList.remove('highlight'), 3000);
+    }
+  </script>
 </head>
 <body>
 
@@ -146,32 +201,87 @@
     <span>🏠 عودة للصفحة الرئيسية</span>
   </a>
 </div>
-<div id="search-results" style="margin: 20px; font-weight: bold; color: green;"></div>
-<div style="margin: 10px;">عدد التجار المطابقين: <span id="match-count">0</span></div>
 
-<script>
-  let menuTimeout;
-  function toggleFabMenu() {
-    const menu = document.getElementById('fabMenu');
-    const isVisible = menu.style.display === 'block';
-    if (!isVisible) {
-      menu.style.display = 'block';
-      clearTimeout(menuTimeout);
-      menuTimeout = setTimeout(() => {
-        menu.style.display = 'none';
-      }, 4000);
-    } else {
-      menu.style.display = 'none';
-      clearTimeout(menuTimeout);
+<script type="module">
+  import { db } from './firebase-config.js';
+  import { collection, getDocs, orderBy, query } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+  const container = document.getElementById('tradersContainer');
+  const govFilter = document.getElementById('govFilter');
+  const brandFilter = document.getElementById('brandFilter');
+  const categoryFilter = document.getElementById('categoryFilter');
+  const weightFilter = document.getElementById('weightFilter');
+  const hintText = document.getElementById('hintText');
+
+  let allTraders = [];
+
+  const loadTraders = async () => {
+    const q = query(collection(db, "traders"), orderBy("createdAt", "desc"));
+    const snapshot = await getDocs(q);
+    allTraders = snapshot.docs.map(doc => doc.data());
+    displayTraders();
+  };
+
+  const displayHint = (value) => {
+    switch(value) {
+      case 'باله':
+        hintText.textContent = '🫕 يعرض فقط تجار الباله (الملابس المستعملة)';
+        break;
+      case 'استوك':
+        hintText.textContent = '📦 يعرض فقط تجار الاستوكات (بضائع زائدة من الماركات)';
+        break;
+      case 'سيلر':
+        hintText.textContent = '👜👠💄 يعرض سيلر المواقع مثل شي إن وسيلر المتاجر الإلكترونية';
+        break;
+      default:
+        hintText.textContent = '';
     }
-  }
-  function scrollToSearch() {
-    const govInput = document.getElementById('govFilter');
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-    govInput.classList.add('highlight');
-    setTimeout(() => govInput.classList.remove('highlight'), 3000);
-  }
+  };
+
+  const displayTraders = () => {
+    const govValue = govFilter.value.trim().toLowerCase();
+    const brandValue = brandFilter.value.trim().toLowerCase();
+    const categoryValue = categoryFilter.value.trim();
+    const weightValue = weightFilter.value.trim();
+
+    displayHint(categoryValue);
+
+    container.innerHTML = '';
+    allTraders
+      .filter(trader => {
+        const govMatch = trader.gov?.toLowerCase().includes(govValue);
+        const brandMatch = brandValue ? trader.name?.toLowerCase().includes(brandValue) : true;
+        const categoryMatch = categoryValue ? trader.category === categoryValue : true;
+        const weightMatch = weightValue ? trader.retail === weightValue : true;
+        return govMatch && brandMatch && categoryMatch && weightMatch;
+      })
+      .forEach(data => {
+        const card = document.createElement("div");
+        card.className = "card";
+        card.innerHTML = `
+          <h3>${data.name || 'بدون اسم'}</h3>
+          <p><strong>📍 المحافظة:</strong> ${data.gov || '-'}</p>
+          <p><strong>📦 الصنف:</strong> ${data.category || '-'}</p>
+          <p><strong>📱 واتساب:</strong> ${data.whatsapp || '-'}</p>
+          <p><strong>🌐 تواصل:</strong> <a href="${data.contact || '#'}" target="_blank">${data.contact || '-'}</a></p>
+          <p><strong>🏠 العنوان:</strong> ${data.address || '-'}</p>
+          <p><strong>🏪 الفروع:</strong> ${data.branches || '-'}</p>
+          <p><strong>💼 النشاط:</strong> ${data.activity || '-'}</p>
+          <p><strong>👥 جروب الفيس:</strong> <a href="${data.facebookGroup || '#'}" target="_blank">${data.facebookGroup || '-'}</a></p>
+          <p><strong>⚖️ الوزن:</strong> ${data.retail || '-'}</p>
+        `;
+        container.appendChild(card);
+      });
+  };
+
+  govFilter.addEventListener('input', displayTraders);
+  brandFilter.addEventListener('input', displayTraders);
+  categoryFilter.addEventListener('change', displayTraders);
+  weightFilter.addEventListener('change', displayTraders);
+
+  loadTraders();
 </script>
 
 </body>
 </html>
+
