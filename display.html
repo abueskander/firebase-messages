@@ -201,6 +201,8 @@
     <span>🏠 عودة للصفحة الرئيسية</span>
   </a>
 </div>
+<div id="search-results" style="margin: 20px; font-weight: bold; color: green;"></div>
+<div style="margin: 10px;">عدد التجار المطابقين: <span id="match-count">0</span></div>
 
 <script type="module">
   import { db } from './firebase-config.js';
@@ -280,6 +282,38 @@
   weightFilter.addEventListener('change', displayTraders);
 
   loadTraders();
+</script>
+<script>
+  window.onload = function () {
+    const urlParams = new URLSearchParams(window.location.search);
+    const searchQuery = urlParams.get('search');
+
+    if (searchQuery) {
+      const resultArea = document.getElementById('search-results');
+      const countSpan = document.getElementById('match-count');
+
+      if (resultArea) {
+        resultArea.innerHTML = `تم البحث عن: <strong>${searchQuery}</strong>`;
+      }
+
+      const cards = document.querySelectorAll('.card');
+      let count = 0;
+
+      cards.forEach(card => {
+        const govEl = card.querySelector('.governorate');
+        if (govEl && govEl.textContent.trim().toLowerCase() === searchQuery.trim().toLowerCase()) {
+          card.style.display = 'block';
+          count++;
+        } else {
+          card.style.display = 'none';
+        }
+      });
+
+      if (countSpan) {
+        countSpan.textContent = count;
+      }
+    }
+  };
 </script>
 
 </body>
