@@ -1,6 +1,45 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
+    <script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/9.0.0/firebase-app.js";
+  import { getAnalytics } from "https://www.gstatic.com/firebasejs/9.0.0/firebase-analytics.js";
+  import { getAuth, signInWithPopup, GoogleAuthProvider } from "https://www.gstatic.com/firebasejs/9.0.0/firebase-auth.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyBWWULCxHewUwhlMbsb_JfIEd--aaW3tXA",
+    authDomain: "mywebapp-2a430.firebaseapp.com",
+    projectId: "mywebapp-2a430",
+    storageBucket: "mywebapp-2a430.appspot.com",  // ← التصحيح هنا
+    messagingSenderId: "574020347624",
+    appId: "1:574020347624:web:893da12b92e64ff5ac8b5d",
+    measurementId: "G-VPP0SP81V3"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const analytics = getAnalytics(app);
+  const auth = getAuth();
+  const provider = new GoogleAuthProvider();
+
+  window.loginWithGoogle = function () {
+    signInWithPopup(auth, provider)
+      .then((result) => {
+        const user = result.user;
+        alert(`مرحبًا ${user.displayName}`);
+      })
+      .catch((error) => {
+        console.error(error);
+        alert("حدث خطأ أثناء تسجيل الدخول");
+      });
+  };
+
+  window.onload = function () {
+    setTimeout(() => {
+      document.getElementById('loginPopup').style.display = 'flex';
+    }, 3000);
+  }
+</script>
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TogareloStock</title>
