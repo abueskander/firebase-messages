@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+  <meta charset="UTF-8">
+  <title>عرض التجار</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    body {
+      font-family: 'Cairo', sans-serif;
+      background: #f1f1f1;
+      direction: rtl;
+      padding: 20px;
+    }
+    h2 {
+      text-align: center;
+      color: #00796b;
+      margin-bottom: 30px;
+    }
+    .card {
+      background: white;
+      border-radius: 12px;
+      padding: 15px;
+      margin-bottom: 20px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+    .card h3 {
+      margin: 0 0 10px;
+      color: #00796b;
+    }
+    .card p {
+      margin: 5px 0;
+    }
+  </style>
+</head>
+<body>
+
+<h2>📋 قائمة التجار</h2>
+
+<div id="tradersContainer"></div>
+
+<script type="module">
+  import { db } from './firebase-config.js';
+  import { collection, getDocs, orderBy, query } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+  const container = document.getElementById('tradersContainer');
+
+  const q = query(collection(db, "traders"), orderBy("createdAt", "desc"));
+  const snapshot = await getDocs(q);
+
+  snapshot.forEach(doc => {
+    const data = doc.data();
+
+    const card = document.createElement("div");
+    card.className = "card";
+    card.innerHTML = `
+      <h3>${data.name || 'بدون اسم'}</h3>
+      <p><strong>📍 المحافظة:</strong> ${data.governorate || '-'}</p>
+      <p><strong>📦 الصنف:</strong> ${data.type || '-'}</p>
+      <p><strong>📱 واتساب:</strong> ${data.whatsapp || '-'}</p>
+      <p><strong>🌐 تواصل:</strong> <a href="${data.contact || '#'}" target="_blank">${data.contact || '-'}</a></p>
+      <p><strong>🏠 العنوان:</strong> ${data.address || '-'}</p>
+      <p><strong>🏪 الفروع:</strong> ${data.branches || '-'}</p>
+      <p><strong>💼 النشاط:</strong> ${data.activity || '-'}</p>
+      <p><strong>👥 جروب الفيس:</strong> <a href="${data.facebook || '#'}" target="_blank">${data.facebook || '-'}</a></p>
+    `;
+    container.appendChild(card);
+  });
+</script>
+
+</body>
+</html>
