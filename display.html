@@ -280,7 +280,7 @@
         container.appendChild(card);
 
         requestAnimationFrame(() => {
-          if (card.scrollHeight <= 160) {
+          if (card.scrollHeight <= 300) {
             card.classList.remove("collapsed");
             const moreBtn = card.querySelector(".more-btn");
             if (moreBtn) moreBtn.remove();
