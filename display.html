@@ -29,12 +29,6 @@
       gap: 10px;
       margin-bottom: 20px;
       justify-content: center;
-      position: relative;
-      transition: opacity 0.5s ease;
-    }
-    .filters.hidden {
-      opacity: 0;
-      pointer-events: none;
     }
     .filters input, .filters select {
       padding: 8px;
@@ -93,16 +87,11 @@
       100% { transform: scale(1); }
     }
     .fab-menu {
-      display: none;
+      display: block;
       position: fixed;
       bottom: 90px;
       left: 20px;
       font-size: 14px;
-      transition: opacity 0.5s ease;
-    }
-    .fab-menu.hidden {
-      opacity: 0;
-      pointer-events: none;
     }
     .fab-menu a {
       display: block;
@@ -113,24 +102,6 @@
       padding: 8px 12px;
       border-radius: 8px;
       box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-    }
-    .home-link {
-      text-align: center;
-      margin: 20px 0;
-    }
-    .home-link a, .home-inline-link {
-      background-color: #00796b;
-      color: white;
-      padding: 10px 20px;
-      border-radius: 8px;
-      text-decoration: none;
-      font-weight: bold;
-      display: inline-block;
-      margin-top: 10px;
-    }
-    .home-inline-link {
-      display: inline-block;
-      margin-bottom: 15px;
     }
     .top-buttons {
       display: flex;
@@ -153,27 +124,16 @@
       margin-top: 3px;
       color: #000;
     }
-    .highlight {
-      border: 2px solid red;
-      box-shadow: 0 0 8px red;
-    }
   </style>
   <script>
-    window.toggleFabMenu = function() {
+    function toggleFabMenu() {
       const menu = document.getElementById('fabMenu');
       menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
-    };
+    }
 
-    window.scrollToTop = function() {
+    function scrollToTop() {
       window.scrollTo({ top: 0, behavior: 'smooth' });
-    };
-
-    window.addEventListener('load', () => {
-      setTimeout(() => {
-        const fabMenu = document.getElementById('fabMenu');
-        fabMenu.classList.add('hidden');
-      }, 2000);
-    });
+    }
   </script>
 </head>
 <body>
