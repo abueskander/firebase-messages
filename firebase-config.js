@@ -15,9 +15,4 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
-// استخدام db في ملفات أخرى
-window.db = db;
-window.collection = collection;
-window.addDoc = addDoc;
-window.onSnapshot = onSnapshot;
-window.serverTimestamp = serverTimestamp;
+export { db };
