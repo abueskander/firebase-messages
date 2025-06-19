@@ -105,23 +105,36 @@
     const imageInput = document.getElementById('imageInput');
 
     form.addEventListener('submit', async (e) => {
-      e.preventDefault();
+  e.preventDefault();
 
-      const file = imageInput.files[0];
-      const title = document.getElementById('title').value;
-      const desc = document.getElementById('desc').value;
-      const phone = document.getElementById('phone').value;
-      const address = document.getElementById('address').value;
+  const file = imageInput.files[0];
+  const title = document.getElementById('title').value;
+  const desc = document.getElementById('desc').value;
 
-      const formData = new FormData();
-      formData.append('file', file);
-      formData.append('upload_preset', 'YOUR_UPLOAD_PRESET');
-      formData.append('cloud_name', 'YOUR_CLOUD_NAME');
+  const formData = new FormData();
+  formData.append('file', file);
+  formData.append('upload_preset', 'my_preset');
 
-      const res = await fetch("https://api.cloudinary.com/v1_1/YOUR_CLOUD_NAME/image/upload", {
-        method: "POST",
-        body: formData
-      });
+  const res = await fetch("https://api.cloudinary.com/v1_1/dvabmgjw8/image/upload", {
+    method: "POST",
+    body: formData
+  });
+
+  const data = await res.json();
+  const imageUrl = data.secure_url;
+
+  // بعدها احفظ البيانات في Firestore
+  await addDoc(collection(db, "posts"), {
+    title,
+    desc,
+    imageUrl,
+    timestamp: serverTimestamp()
+  });
+
+  alert("تم رفع المنشور!");
+  form.reset();
+});
+
 
       const data = await res.json();
       const imageUrl = data.secure_url;
