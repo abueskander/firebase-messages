@@ -104,22 +104,8 @@
     const form = document.getElementById('uploadForm');
     const imageInput = document.getElementById('imageInput');
 
-    function canPost() {
-      const lastPost = localStorage.getItem("lastPostTime");
-      if (!lastPost) return true;
-      const lastTime = new Date(parseInt(lastPost));
-      const now = new Date();
-      const diffHours = (now - lastTime) / (1000 * 60 * 60);
-      return diffHours >= 12;
-    }
-
     form.addEventListener('submit', async (e) => {
       e.preventDefault();
-
-      if (!canPost()) {
-        alert("يمكنك النشر مرة كل 12 ساعة فقط.");
-        return;
-      }
 
       const file = imageInput.files[0];
       const title = document.getElementById('title').value;
@@ -149,9 +135,7 @@
         timestamp: serverTimestamp()
       });
 
-      localStorage.setItem("lastPostTime", Date.now().toString());
-
-      alert("تم رفع العرض!");
+      alert(" تم رفع العرض بنجاح !");
       form.reset();
     });
   </script>
