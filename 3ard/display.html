@@ -11,10 +11,27 @@
       background-size: cover;
       margin: 0;
       padding: 20px;
+      padding-bottom: 80px;
       display: flex;
       flex-direction: column;
       align-items: center;
       color: #fff;
+    }
+    .logo {
+      position: fixed;
+      top: 10px;
+      left: 10px;
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      overflow: hidden;
+      box-shadow: 0 0 10px rgba(0,0,0,0.5);
+      z-index: 1001;
+    }
+    .logo img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
     }
     h2 {
       text-align: center;
@@ -36,32 +53,115 @@
       margin-right: 8px;
     }
     .post {
-      background-color: rgba(255, 255, 255, 0.75);
-      color: #000;
-      padding: 20px;
+      position: relative;
+      background-color: transparent;
+      color: #fff;
+      margin: 10px;
+      width: 95%;
+      max-width: 440px;
       border-radius: 12px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-      margin-bottom: 20px;
-      width: 100%;
-      max-width: 600px;
-      backdrop-filter: blur(4px);
+      overflow: hidden;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.6);
     }
     .post img {
-      max-width: 100%;
-      border-radius: 8px;
-      margin-bottom: 10px;
+      width: 100%;
+      height: auto;
+      max-height: 320px;
+      object-fit: contain;
+      display: block;
     }
-    .post h3 {
-      margin: 0 0 10px;
+    .overlay {
+      position: absolute;
+      bottom: 0;
+      background: linear-gradient(to top, rgba(0,0,0,0.8), rgba(0,0,0,0.2));
+      width: 100%;
+      padding: 16px;
+      box-sizing: border-box;
     }
-    .post p {
+    .overlay h3 {
+      margin: 0 0 8px;
+      font-size: 18px;
+      color: #ffeb3b;
+    }
+    .overlay p {
       margin: 6px 0;
+      font-size: 14px;
+      line-height: 1.5;
+    }
+    .button-container {
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+      background: rgba(0, 0, 0, 0.8);
+      padding: 10px;
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+      z-index: 999;
+    }
+    .nav-button {
+      padding: 12px 24px;
+      font-size: 18px;
+      background-color: #4CAF50;
+      border: none;
+      border-radius: 8px;
+      color: white;
+      cursor: pointer;
+      text-decoration: none;
+      transition: background-color 0.3s;
+    }
+    .nav-button:hover {
+      background-color: #388E3C;
+    }
+    #welcome {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.8);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      color: white;
+      font-size: 36px;
+      z-index: 1000;
+      animation: fadeOut 4s forwards;
+    }
+    #welcome .icon {
+      font-size: 80px;
+      animation: grow 2s ease-in-out;
+    }
+    @keyframes grow {
+      0% { transform: scale(0.5); opacity: 0; }
+      50% { transform: scale(1.5); opacity: 1; }
+      100% { transform: scale(1); }
+    }
+    @keyframes fadeOut {
+      0% { opacity: 1; }
+      80% { opacity: 1; }
+      100% { opacity: 0; visibility: hidden; display: none; }
     }
   </style>
 </head>
 <body>
+  <div class="logo">
+    <img src="https://abueskander.github.io/firebase-messages/FB_IMG_1750277736215.jpg" alt="اللوجو">
+  </div>
+
+  <div id="welcome">
+    <div class="icon">❤️</div>
+    <div style="margin-top: 20px; font-size: 28px;">شكرا لتواجدكم اتمني الموقع ينفعكم</div>
+  </div>
+
   <h2>صفحة العروض</h2>
   <div id="posts"></div>
+
+  <div class="button-container">
+    <a class="nav-button" href="https://abueskander.github.io/firebase-messages/index.html">الصفحة الرئيسية</a>
+    <a class="nav-button" href="https://abueskander.github.io/firebase-messages/message.html">الدردشة في المجتمع</a>
+  </div>
 
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
@@ -91,10 +191,12 @@
       postElement.className = 'post';
       postElement.innerHTML = `
         <img src="${post.imageUrl}" alt="صورة العرض">
-        <h3>${post.title}</h3>
-        <p>${post.desc}</p>
-        <p><strong>📞 الهاتف:</strong> ${post.phone}</p>
-        <p><strong>📍 العنوان:</strong> ${post.address}</p>
+        <div class="overlay">
+          <h3>${post.title}</h3>
+          <p>${post.desc}</p>
+          <p><strong>📞</strong> ${post.phone}</p>
+          <p><strong>📍</strong> ${post.address}</p>
+        </div>
       `;
       postsContainer.appendChild(postElement);
     });
