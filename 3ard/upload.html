@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>نشر العروض </title>
+  <title>نشر العروض</title>
   <style>
     body {
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -90,12 +90,13 @@
     import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
     const firebaseConfig = {
-      apiKey: "API_KEY",
-      authDomain: "PROJECT_ID.firebaseapp.com",
-      projectId: "PROJECT_ID",
-      storageBucket: "PROJECT_ID.appspot.com",
-      messagingSenderId: "SENDER_ID",
-      appId: "APP_ID"
+      apiKey: "AIzaSyCIuNrBGfVLKL-Rd1eHBSJAVyEIemfSwZ4",
+      authDomain: "togareloctock1.firebaseapp.com",
+      projectId: "togareloctock1",
+      storageBucket: "togareloctock1.appspot.com",
+      messagingSenderId: "693317989397",
+      appId: "1:693317989397:web:d5c5cffb30311ba92aca1c",
+      measurementId: "G-DK722FT6L5"
     };
 
     const app = initializeApp(firebaseConfig);
@@ -105,40 +106,22 @@
     const imageInput = document.getElementById('imageInput');
 
     form.addEventListener('submit', async (e) => {
-  e.preventDefault();
+      e.preventDefault();
 
-  const file = imageInput.files[0];
-  const title = document.getElementById('title').value;
-  const desc = document.getElementById('desc').value;
-  const phone = document.getElementById('phone').value;
-  const address = document.getElementById('address').value;
+      const file = imageInput.files[0];
+      const title = document.getElementById('title').value;
+      const desc = document.getElementById('desc').value;
+      const phone = document.getElementById('phone').value;
+      const address = document.getElementById('address').value;
 
-  const formData = new FormData();
-  formData.append('file', file);
-  formData.append('upload_preset', 'my_preset');
+      const formData = new FormData();
+      formData.append('file', file);
+      formData.append('upload_preset', 'my_preset');
 
-  const res = await fetch("https://api.cloudinary.com/v1_1/dvabmgjw8/image/upload", {
-    method: "POST",
-    body: formData
-  });
-
-  const data = await res.json();
-  const imageUrl = data.secure_url;
-
-  await addDoc(collection(db, "posts"), {
-    title,
-    desc,
-    phone,
-    address,
-    imageUrl,
-    timestamp: serverTimestamp()
-  });
-
-  alert("تم رفع العرض بنجاح!");
-  form.reset();
-});
-
-
+      const res = await fetch("https://api.cloudinary.com/v1_1/dvabmgjw8/image/upload", {
+        method: "POST",
+        body: formData
+      });
 
       const data = await res.json();
       const imageUrl = data.secure_url;
@@ -152,7 +135,7 @@
         timestamp: serverTimestamp()
       });
 
-      alert(" تم رفع العرض بنجاح !");
+      alert("تم رفع العرض بنجاح!");
       form.reset();
     });
   </script>
