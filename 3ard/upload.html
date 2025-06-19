@@ -110,6 +110,8 @@
   const file = imageInput.files[0];
   const title = document.getElementById('title').value;
   const desc = document.getElementById('desc').value;
+  const phone = document.getElementById('phone').value;
+  const address = document.getElementById('address').value;
 
   const formData = new FormData();
   formData.append('file', file);
@@ -123,17 +125,19 @@
   const data = await res.json();
   const imageUrl = data.secure_url;
 
-  // بعدها احفظ البيانات في Firestore
   await addDoc(collection(db, "posts"), {
     title,
     desc,
+    phone,
+    address,
     imageUrl,
     timestamp: serverTimestamp()
   });
 
-  alert("تم رفع المنشور!");
+  alert("تم رفع العرض بنجاح!");
   form.reset();
 });
+
 
 
       const data = await res.json();
