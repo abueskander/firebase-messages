@@ -59,11 +59,18 @@
             flex-wrap: wrap;
             justify-content: space-between;
             align-items: flex-end;
-            background-color: #ffffff;
+            background-color:#fff;
             padding: 10px;
-            border-bottom: 5px solid #006400
+           
+          <header style="
+  border:3px solid #064400;
+  border-radius: 20px;
+  padding: 10px;
+  margin: 5px;
+"> 
 ;
         }
+      
         .menu-icons {
             display: flex;
             gap: 25px;
@@ -250,32 +257,49 @@
             0%, 100% { transform: translateY(0); }
             50% { transform: translateY(-10px); }
         }
- .admin-button,
+.admin-button {
+  background-color:transparent ;        
+  color: black;
+  border: 2px solid black;
+  border-radius: 10px;
+  font-weight: bold;
+  font-size: 14px;
+  cursor: pointer;
+  padding: 2px 5px;
+  transition: background-color 0.3s ease;
+}
+
+.admin-button:hover {
+  background-color: #070;        /* لما تقف عليه بالماوس */
+}
+
+
+
 .login-button {
-  padding: 2px 16px;
-  background-color: #0a0;
-  color: white;
+  padding: 2px 5px;
+  background-color: transparent;
+  color: black ;
  
   border: 2px solid black;
 
-  border-radius: 50px;
+  border-radius: 10px;
   font-weight: bold;
   font-size: 14px;
   cursor: pointer;
   transition: background-color 0.3s ease;
 }
 
-.admin-button:hover,
 .login-button:hover {
-  background-color: #070;
+  background-color: black;
+  color: white;
 }
 .header-buttons {
   display: flex;
   justify-content: center;
-  gap: 150px;
+  gap: 10px;
   align-items: center;
-  margin-top: -50px;     /* يرفعهم لفوق شوية */
-  margin-right: 0px;   /* يبعدهم شوية عن الأيقونات (في RTL) */
+  margin-top: 6px;     /* يرفعهم لفوق شوية */
+  margin-right: 5px;   /* يبعدهم شوية عن الأيقونات (في RTL) */
 }
 
       
@@ -291,10 +315,7 @@
 
 <header>
   
-   <div class="header-buttons">
-    <button class="admin-button" onclick="window.location.href='tel:01021205253'">الأدمن</button>
-    <button class="login-button" onclick="loginWithGoogle()">تسجيل الدخول</button>
-  </div>
+   
   <div class="menu-icons">
         <div class="icon-wrapper">
             <i class="fas fa-house" id="homeIcon"></i>
@@ -356,8 +377,13 @@
                 <a class="whatsapp" href="https://chat.whatsapp.com/BfDGQ9PMmAaKOT3VheZkoX" target="_blank"><i class="fab fa-whatsapp"></i> واتساب</a>
             </div>
         </div>
-    </div></button>
+    </div>
 
+
+<div class="header-buttons">
+    <button class="admin-button" onclick="window.location.href='tel:01021205253'">الأدمن</button>
+    <button class="login-button" onclick="loginWithGoogle()">تسجيل الدخول</button>
+  </div>
 
 
 </header>
@@ -427,9 +453,6 @@
         }, 3000);
     }
 </script>
-<div class="header-buttons">
-    <button class="admin-button" onclick="window.location.href='tel:01021205253'">الأدمن</button>
-    <button class="login-button" onclick="loginWithGoogle()">تسجيل الدخول</button>
-  </div>
+
 </body>
 </html>
