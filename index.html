@@ -36,7 +36,7 @@
   window.onload = function () {
     setTimeout(() => {
       document.getElementById('loginPopup').style.display = 'flex';
-    }, 3000);
+    }, 10000);
   }
 </script>
 
@@ -49,7 +49,8 @@
         * { box-sizing: border-box; }
         body {
             font-family: 'Almarai', sans-serif;
-            background-color: #f3f4f7;
+            background-image: url('https://abueskander.github.io/firebase-messages/images.jpeg');
+
             margin: 0;
             padding: 0;
         }
@@ -57,20 +58,21 @@
             display: flex;
             flex-wrap: wrap;
             justify-content: space-between;
-            align-items: center;
+            align-items: flex-end;
             background-color: #ffffff;
             padding: 10px;
-            border-bottom: 1px solid #ddd;
+            border-bottom: 5px solid #006400
+;
         }
         .menu-icons {
             display: flex;
-            gap: 15px;
+            gap: 25px;
             position: relative;
             flex-wrap: wrap;
             align-items: center;
         }
         .menu-icons i {
-            font-size: 24px;
+            font-size: 26px;
             color: #333;
             cursor: pointer;
         }
@@ -84,13 +86,59 @@
             font-size: 14px;
             display: none;
             flex-direction: column;
-            gap: 5px;
+            gap: 10px;
             white-space: nowrap;
             z-index: 1000;
         }
-        .tooltip.show, .groups-menu.show, .actions-menu.show, .messages-menu.show, .locations-menu.show, .sellers-menu.show, .offers-menu.show {
+      
+        .tooltip.show, .groups-menu.show, .actions-menu.show, .show, .locations-menu.show, .sellers-menu.show, .offers-menu.show {
             display: flex;
         }
+      .messages-menu {
+  position: absolute;
+  top: 30px;
+  right: 250px;
+  background-color: #222;
+  color: white;
+  padding: 10px;
+  width: 130px;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  display: none;
+  flex-direction: column;
+  gap: 10px;
+  z-index: 1000;
+}
+
+.messages-menu.show {
+  display: flex;
+}
+
+.messages-menu .title {
+  background-color: #0a0;
+  padding: 6px 12px;
+  border-radius: 5px;
+  font-weight: bold;
+  text-align: center;
+  font-size: 16px;
+}
+
+.messages-menu a {
+  display: block;
+  background-color: #444;
+  padding: 8px;
+  border-radius: 5px;
+  text-decoration: none;
+  color: white;
+  font-weight: bold;
+  text-align: center;
+  transition: background-color 0.3s ease;
+}
+
+.messages-menu a:hover {
+  background-color: #0a0;
+}
+
         .groups-menu .title, .actions-menu .title, .messages-menu .title, .locations-menu .title, .sellers-menu .title, .offers-menu .title {
             padding: 5px 10px;
             background-color: #0a0;
@@ -114,229 +162,9 @@
             background-color: #0a0;
             color: white;
             border: none;
-            padding: 5px 15px;
-            border-radius: 15px;
-            font-weight: bold;
-            cursor: pointer;
-        }
-        .content {
-            text-align: center;
-            padding: 30px 10px 10px;
-            font-weight: bold;
-        }
-        .content h1 {
-            font-size: 28px;
-            margin-bottom: 10px;
-            font-weight: bold;
-            color: black;
-        }
-        .contact {
-            color: green;
-            font-weight: bold;
-            margin-top: 5px;
-        }
-        .categories {
-            display: flex;
-            justify-content: center;
-            gap: 20px;
-            margin-top: 20px;
-            flex-wrap: wrap;
-        }
-        .category {
-            text-align: center;
-            width: 45%;
-            margin-bottom: 20px;
-            font-weight: bold;
-        }
-        .category i, .shoe-icon, .box-icon {
-            font-size: 40px;
-            color: #333;
-            margin-bottom: 10px;
-        }
-        .login-popup {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            background: rgba(0, 0, 0, 0.5);
-            justify-content: center;
-            align-items: center;
-            z-index: 2000;
-        }
-        .login-popup .popup-content {
-            background: white;
-            padding: 20px;
-            border-radius: 10px;
-            text-align: center;
-            font-weight: bold;
-        }
-        .login-popup button {
-            margin-top: 15px;
-            padding: 8px 20px;
-            background-color: #0a0;
-            color: white;
-            border: none;
-            border-radius: 10px;
-            font-weight: bold;
-            cursor: pointer;
-        }
-        .message-button {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            background-color: #0a0;
-            color: white;
-            border: none;
-            padding: 15px 20px;
+            padding: 5px 5px;
             border-radius: 50px;
-            font-size: 16px;
             font-weight: bold;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.2);
             cursor: pointer;
-            z-index: 9999;
-            animation: bounce 2s infinite;
         }
-        @keyframes bounce {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-10px); }
-        }
-    </style>
-</head>
-<body>
-<div class="content">
-    <h1 style="color:black">Original brands | <span style="color:black">تجــارالإسـتـوكـات و مستوردين ويد أولي</span></h1>
-</div>
-
-<header>
-    <div class="menu-icons">
-        <div class="icon-wrapper">
-            <i class="fas fa-house" id="homeIcon"></i>
-            <div class="tooltip" id="homeTooltip">الرئيسية</div>
-        </div>
-        <div class="icon-wrapper">
-            <i class="fas fa-users" id="groupsIcon"></i>
-            <div class="groups-menu" id="groupsMenu">
-                <div class="title">المجموعات</div>
-                <a class="facebook" href="https://www.facebook.com/share/g/17QVpknXcw/" target="_blank">جروب الفيس بوك</a>
-                <a class="whatsapp" href="https://chat.whatsapp.com/BfDGQ9PMmAaKOT3VheZkoX" target="_blank">جروب واتس</a>
-                <a class="telegram" href="https://t.me/togareloctock" target="_blank">جروب تليجرام</a>
-            </div>
-        </div>
-        <div class="icon-wrapper">
-            <i class="fas fa-map-marker-alt" id="locationsIcon"></i>
-            <div class="locations-menu" id="locationsMenu">
-                <div class="title">أماكن التجار</div>
-                <a href="#">القاهرة</a>
-                <a href="#">الإسكندرية</a>
-                <a href="#">الفيوم</a>
-                <a href="#">المنصورة</a>
-                <a href="#">الشرقية</a>
-            </div>
-        </div>
-        <div class="icon-wrapper">
-            <i class="fas fa-store" id="sellersIcon"></i>
-            <div class="sellers-menu" id="sellersMenu">
-                <div class="title">السيلر</div>
-                <a href="#">تسجيل بائع</a>
-                <a href="#">لوحة البائع</a>
-            </div>
-        </div>
-        <div class="icon-wrapper">
-            <i class="fas fa-gift" id="offersIcon"></i>
-            <div class="offers-menu" id="offersMenu">
-                <div class="title">عرض اليوم</div>
-                <a href="#">عرض مميز</a>
-            </div>
-        </div>
-        <div class="icon-wrapper">
-            <i class="fas fa-plus-circle" id="actionsIcon"></i>
-            <div class="actions-menu" id="actionsMenu">
-                <div class="title">الخيارات</div>
-                <a href="#">نشر منشور</a>
-                <a href="#">حث عن تاجر</a>
-                <a href="#">تصفح المنتجات</a>
-            </div>
-        </div>
-        <div class="icon-wrapper">
-            <i class="fab fa-facebook-messenger" id="messagesIcon"></i>
-            <div class="messages-menu" id="messagesMenu">
-                <div class="title">الرسائل</div>
-                <a class="facebook" href="https://m.me/ch/AbaLFOYdGW3jm0Rj/" target="_blank"><i class="fab fa-facebook-f"></i> فيس بوك</a>
-                <a class="telegram" href="https://t.me/togareloctock" target="_blank"><i class="fab fa-telegram"></i> تليجرام</a>
-                <a class="whatsapp" href="https://chat.whatsapp.com/BfDGQ9PMmAaKOT3VheZkoX" target="_blank"><i class="fab fa-whatsapp"></i> واتساب</a>
-            </div>
-        </div>
-    </div>
-
-    <button class="admin-button" onclick="window.location.href='tel:01021205253'">الأدمن</button>
-</header>
-<div class="category">
-        <i class="fas fa-user-tie"></i>
-        <a class="button-link" href="https://abueskander.github.io/firebase-messages/display.html">البحث عن تاجر</a>
-    </div>
-<div class="categories">
-    <div class="category">
-        <i class="fas fa-shopping-bag"></i>
-        <div>تجار الشنط</div>
-    </div>
-    <div class="category">
-        <div class="shoe-icon">👟</div>
-        <div>تجار الأحذية</div>
-    </div>
-    <div class="category">
-        <i class="fas fa-globe-europe"></i>
-        <div>تجار الاستوكات</div>
-    </div>
-  
-</div>
-
-<div class="login-popup" id="loginPopup">
-    <div class="popup-content">
-        <p>الموقع لتجار الاستوكات والبراندات في كل محافظات مصر وخارجها مجاناً</p>
-        <p style="font-size: 12px; color: gray;">تحت الإنشاء بواسطة محمد أبو اسكندر ٢٠٢٥</p>
-        <button onclick="document.getElementById('loginPopup').style.display='none'">إغلاق</button>
-    </div>
-</div>
-
-<a href="https://abueskander.github.io/firebase-messages/message.html" class="message-button">دردشه في المجتمع</a>
-
-<script>
-    const menus = {
-        home: 'homeTooltip',
-        groups: 'groupsMenu',
-        actions: 'actionsMenu',
-        messages: 'messagesMenu',
-        locations: 'locationsMenu',
-        sellers: 'sellersMenu',
-        offers: 'offersMenu'
-    };
-
-    function closeAllMenus() {
-        Object.values(menus).forEach(id => document.getElementById(id).classList.remove('show'));
-    }
-
-    Object.entries(menus).forEach(([key, id]) => {
-        const icon = document.getElementById(`${key}Icon`);
-        if (icon) {
-            icon.addEventListener('click', () => {
-                closeAllMenus();
-                const menu = document.getElementById(id);
-                if (menu) {
-                    menu.classList.add('show');
-                    setTimeout(() => menu.classList.remove('show'), 2000);
-                }
-            });
-        }
-    });
-
-    window.onload = function() {
-        setTimeout(() => {
-            document.getElementById('loginPopup').style.display = 'flex';
-        }, 3000);
-    }
-</script>
-
-</body>
-</html>
+   
