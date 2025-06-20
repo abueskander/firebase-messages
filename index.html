@@ -323,6 +323,23 @@
   margin-top: -3px;         /* مسافة من فوق */
   font-weight: ;        /* جعله عريض */
 }
+.iframe-cropped-box {
+  width: 100%;
+  max-width: 400px;
+  height: 250px;         /* ارتفاع الجزء اللي هيتعرض */
+  overflow: hidden;      /* إخفاء باقي الصفحة */
+  border-radius: 10px;
+  margin: 20px auto;
+  position: relative;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+}
+
+.iframe-cropped-box iframe {
+  width: 100%;
+  height: 600px;         /* ارتفاع iframe نفسه أكبر من الكرتونة */
+  border: none;
+  transform: translateY(-200px); /* يحرك العرض لفوق عشان يبدأ من مكان معين */
+}
 
       
 
@@ -414,9 +431,9 @@
   
 </div>
 <div class="preview-box">
-  <h2>عرض اليوم</h2>
-  <iframe src="https://abueskander.github.io/firebase-messages/3ard/display.html"></iframe>
-  <a href="https://abueskander.github.io/firebase-messages/3ard/display.html" class="full-link">تصفح العروض</a>
+  <h2>المجتمع</h2>
+  <iframe src="https://abueskander.github.io/firebase-messages/message.html"></iframe>
+  <a href="https://abueskander.github.io/firebase-messages/message.html" class="full-link">عرض المحادثة الكاملة</a>
 </div>
 
 <div class="login-popup" id="loginPopup">
