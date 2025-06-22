@@ -46,7 +46,6 @@
 
         localStorage.setItem("sentInitialMessage", "true");
         hasSentInitialMessage = true;
-        document.getElementById("sendSound").play();
         form.reset();
         contentInput.focus();
         alert("الرجاء مشاركة رقمك للمتابعة في الدردشة.");
@@ -66,7 +65,6 @@
           timestamp: serverTimestamp()
         });
 
-        document.getElementById("sendSound").play();
         form.reset();
         contentInput.focus();
       }
@@ -114,6 +112,14 @@
       });
       messagesDiv.appendChild(fragments);
       messagesDiv.scrollTop = 0;
+    });
+
+    // تشغيل الصوت عند دخول الصفحة
+    window.addEventListener("DOMContentLoaded", () => {
+      const welcomeAudio = document.getElementById("welcomeSound");
+      if (welcomeAudio) {
+        welcomeAudio.play().catch(e => console.log("Auto play blocked"));
+      }
     });
   </script>
   <style>
@@ -226,7 +232,7 @@
   </style>
 </head>
 <body>
-  <audio id="sendSound" src="https://abueskander.github.io/firebase-messages/%D8%B5%D9%88%D8%AA%20%D9%84%D9%84%D9%85%D9%88%D9%86%D8%AA%D8%A7%D8%AC%20_car%20_carryminati%20_cartoon%20_youtubeshorts%20_youtube(M4A_128K).m4a" preload="auto"></audio>
+  <audio id="welcomeSound" src="https://abueskander.github.io/firebase-messages/Audio/%D9%86%D8%BA%D9%85%D8%A9%20%20%D8%B5%D9%84%D9%8A%20%D8%B9%D9%84%D9%89%20%D9%85%D8%AD%D9%85%D8%AF%20%EF%B7%BA(M4A_128K).m4a" preload="auto"></audio>
   <div id="messages"></div>
   <button class="floating-button" onclick="document.getElementById('messageBox').classList.toggle('visible')">+</button>
   <div id="messageBox">
