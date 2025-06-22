@@ -21,71 +21,64 @@
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
 
-        const names = [" الله اكبر", "لا حول ولا قوه الا بالله", "سبحان الله وبحمده", "الحمد لله", "اللهم صلي على محمد", "لا اله الاالله.", "وحد الله"];
-
         const form = document.getElementById("messageForm");
         const contentInput = document.getElementById("content");
+        const phoneInput = document.getElementById("phone");
         const messagesDiv = document.getElementById("messages");
         const messageBox = document.getElementById("messageBox");
-        const openFormBtn = document.getElementById("openFormBtn");
-        const refreshBtn = document.getElementById("refreshBtn");
-        const homeBtn = document.getElementById("homeBtn");
-        const searchBtn = document.getElementById("searchBtn");
 
-        openFormBtn.addEventListener("click", () => {
-            messageBox.classList.add("visible");
-            openFormBtn.style.display = "none";
-            contentInput.focus();
-        });
-function canPost() {
-    const lastPostTime = localStorage.getItem("lastPostTime");
-    if (!lastPostTime) return true;
+        messageBox.classList.add("visible");
 
-    const now = Date.now();
-    const diff = now - parseInt(lastPostTime, 10);
-    return diff >= 5 * 60 * 1000; // 5 دقائق = 300000 ملي ثانية
-}
+        function canPost() {
+            const lastPostTime = localStorage.getItem("lastPostTime");
+            if (!lastPostTime) return true;
 
-function getTimeRemaining() {
-    const lastPostTime = localStorage.getItem("lastPostTime");
-    if (!lastPostTime) return 0;
+            const now = Date.now();
+            const diff = now - parseInt(lastPostTime, 10);
+            return diff >= 5 * 1000;
+        }
 
-    const now = Date.now();
-    const diff = now - parseInt(lastPostTime, 10);
-    const remaining = 5 * 60 * 1000 - diff;
-    return Math.ceil(remaining / 1000); // بالثواني
-}
+        function getTimeRemaining() {
+            const lastPostTime = localStorage.getItem("lastPostTime");
+            if (!lastPostTime) return 0;
+
+            const now = Date.now();
+            const diff = now - parseInt(lastPostTime, 10);
+            const remaining = 5 * 1000 - diff;
+            return Math.ceil(remaining / 1000);
+        }
 
         form.addEventListener("submit", async (e) => {
-    e.preventDefault();
+            e.preventDefault();
 
-    // 🔒 تحقق هل يُسمح بالنشر
-    if (!canPost()) {
-        const remaining = getTimeRemaining();
-        alert(`يجب الانتظار ${remaining} ثانية قبل النشر مرة أخرى.`);
-        return;
-    }
+            if (!canPost()) {
+                const remaining = getTimeRemaining();
+                alert(`يجب الانتظار ${remaining} ثانية قبل النشر مرة أخرى.`);
+                return;
+            }
 
-    const content = contentInput.value.trim();
-    if (content) {
-        const randomName = names[Math.floor(Math.random() * names.length)];
-        await addDoc(collection(db, "messages"), {
-            phone: randomName,
-            content,
-            timestamp: serverTimestamp()
+            const content = contentInput.value.trim();
+            const phone = phoneInput.value.trim();
+
+            if (!/^\d{11}$/.test(phone)) {
+                alert("يرجى إدخال رقم موبايل صحيح مكون من 11 رقمًا.");
+                return;
+            }
+
+            if (content) {
+                await addDoc(collection(db, "messages"), {
+                    phone,
+                    content,
+                    timestamp: serverTimestamp()
+                });
+
+                localStorage.setItem("lastPostTime", Date.now());
+                document.getElementById("sendSound").play();
+
+                form.reset();
+                contentInput.focus();
+            }
         });
-
-        // ⏱️ خزّن وقت الإرسال في localStorage
-        localStorage.setItem("lastPostTime", Date.now());
-
-        // 🎵 شغل صوت الإرسال
-        document.getElementById("sendSound").play();
-
-        form.reset();
-        contentInput.focus();
-    }
-});
-
 
         function timeAgo(date) {
             const now = new Date();
@@ -102,114 +95,95 @@ function getTimeRemaining() {
         const q = query(collection(db, "messages"), orderBy("timestamp", "asc"));
         onSnapshot(q, (snapshot) => {
             messagesDiv.innerHTML = "";
+            const fragments = document.createDocumentFragment();
             snapshot.forEach((doc) => {
                 const data = doc.data();
                 const dateObj = data.timestamp?.toDate();
                 const date = dateObj ? timeAgo(dateObj) : "جارٍ التحميل...";
                 const div = document.createElement("div");
                 div.classList.add("message");
+                const whatsappLink = `https://wa.me/+2${data.phone}`;
                 div.innerHTML = `
                     <div class="message-box">
-                        <strong>${data.phone}</strong>: ${data.content}<br>
+                        <div style="text-align: right;"><strong>${data.phone}</strong>: ${data.content}<br>
+                        <a href="${whatsappLink}" target="_blank">  محادثه خاصه  </a></div>
                         <small>${date}</small>
                     </div>
                 `;
-                messagesDiv.appendChild(div);
+                fragments.insertBefore(div, fragments.firstChild);
             });
-            messagesDiv.scrollTop = messagesDiv.scrollHeight;
-        });
-
-        refreshBtn.addEventListener("click", () => {
-            location.reload();
-        });
-
-        homeBtn.addEventListener("click", () => {
-            window.location.href = "https://abueskander.github.io/firebase-messages/index.html";
-        });
-
-        searchBtn.addEventListener("click", () => {
-            window.location.href = "https://abueskander.github.io/firebase-messages/display.html?search=%D8%A7%D9%84%D8%A7%D8%B3%D9%83%D9%86%D8%AF%D8%B1%D9%8A%D9%87";
+            messagesDiv.appendChild(fragments);
+            messagesDiv.scrollTop = 0;
         });
     </script>
     <style>
-        * {
-            box-sizing: border-box;
-        }
-
+        * { box-sizing: border-box; }
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: url('https://abueskander.github.io/firebase-messages/images.jpeg') no-repeat center center fixed;
-            background-size: cover;
-            margin: 0;
-            padding: 0;
+            background-color: #eafce9;
+            margin: 1px;
+            padding: 1px;
             display: flex;
             flex-direction: column;
             height: 100vh;
             position: relative;
-            color: white;
+            color: black;
         }
-
         #messages {
             flex: 1;
             overflow-y: auto;
             padding: 10px;
             display: flex;
-            flex-direction: column;
-            margin-bottom: 130px;
+            flex-direction: column-reverse;
+            margin-bottom: 30px;
         }
-
         .message {
             margin-bottom: 10px;
         }
-
         .message-box {
-            background: #000;
+            background: #e0fbdf;
             padding: 10px;
             border-radius: 20px;
-            max-width: 80%;
-            align-self: flex-end;
+            max-width: 100%;
             font-size: 16px;
-            position: relative;
             box-shadow: 0 1px 1px rgba(0,0,0,0.1);
-            color: white;
+            color: black;
             border: 1px solid white;
         }
-
         .message-box small {
             font-size: 11px;
-            color: #eee;
+            color: #152a15;
             display: block;
             margin-top: 4px;
             text-align: right;
         }
-
         #messageBox {
             position: fixed;
-            bottom: 65px;
+            bottom: 3px;
             left: 20px;
-            width: calc(100% - 40px);
+            width: calc(100% - 10%);
             max-width: 500px;
             background: white;
             border-radius: 30px;
             box-shadow: 0 6px 20px rgba(0,0,0,0.2);
-            display: none;
-            padding: 12px;
+            padding: 10px;
             z-index: 1000;
         }
-
-        #messageBox.visible {
-            display: block;
-        }
-
         #messageForm {
             display: flex;
-            flex-direction: row;
-            align-items: center;
+            flex-direction: column;
             gap: 10px;
         }
-
-        #messageForm textarea {
-            flex: 1;
+        #phone {
+            padding: 10px;
+            border-radius: 20px;
+            border: 1px solid #ccc;
+            font-size: 16px;
+            background: #f0f0f0;
+            outline: none;
+            color: #333;
+        }
+        #content {
             padding: 12px;
             border-radius: 20px;
             border: 1px solid #ccc;
@@ -220,104 +194,34 @@ function getTimeRemaining() {
             outline: none;
             color: #333;
         }
-
-        #messageForm textarea:focus {
+        #content:focus,
+        #phone:focus {
             border-color: #25D366;
             background: #fff;
         }
-
         #messageForm button {
-            padding: 10px 12px;
+            padding: 10px;
             background: #25D366;
             color: white;
             border: none;
-            border-radius: 50%;
-            font-size: 20px;
+            border-radius: 20px;
+            font-size: 16px;
             cursor: pointer;
-            transition: background 0.3s;
-            display: flex;
-            align-items: center;
-            justify-content: center;
         }
-
         #messageForm button:hover {
             background: #1ebe5d;
-        }
-
-        #messageForm button::before {
-            content: '➤';
-        }
-
-        #openFormBtn {
-            position: fixed;
-            bottom: 65px;
-            left: 20px;
-            background-color: #25D366;
-            color: white;
-            border: none;
-            border-radius: 50px;
-            padding: 12px 20px;
-            font-size: 16px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-            cursor: pointer;
-            z-index: 999;
-        }
-
-        #openFormBtn::after {
-            content: ' النشر في المجتمع';
-        }
-
-        #refreshBtn, #homeBtn, #searchBtn {
-            position: fixed;
-            bottom: 15px;
-            background-color: #128C45;
-            color: white;
-            border: none;
-            border-radius: 25px;
-            padding: 10px 16px;
-            font-size: 14px;
-            cursor: pointer;
-            z-index: 999;
-        }
-
-        #refreshBtn {
-            left: 20px;
-        }
-
-        #homeBtn {
-            left: 140px;
-        }
-
-        #searchBtn {
-            left: 270px;
-        }
-
-        #chatLogo {
-            position: fixed;
-            top: 10px;
-            right: 10px;
-            width: 70px;
-            height: 70px;
-            border-radius: 50%;
-            box-shadow: 0 0 8px rgba(0,0,0,0.3);
-            z-index: 998;
         }
     </style>
 </head>
 <body>
-   <audio id="sendSound" src="https://abueskander.github.io/firebase-messages/%D8%B5%D9%88%D8%AA%20%D9%84%D9%84%D9%85%D9%88%D9%86%D8%AA%D8%A7%D8%AC%20_car%20_carryminati%20_cartoon%20_youtubeshorts%20_youtube(M4A_128K).m4a" preload="auto"></audio>
-
+    <audio id="sendSound" src="https://abueskander.github.io/firebase-messages/%D8%B5%D9%88%D8%AA%20%D9%84%D9%84%D9%85%D9%88%D9%86%D8%AA%D8%A7%D8%AC%20_car%20_carryminati%20_cartoon%20_youtubeshorts%20_youtube(M4A_128K).m4a" preload="auto"></audio>
     <div id="messages"></div>
-    <div id="messageBox">
+    <div id="messageBox" class="visible">
         <form id="messageForm">
-            <textarea id="content" placeholder="اكتب رسالتك..." required></textarea>
-            <button type="submit"></button>
+            <input id="phone" type="text" placeholder="رقم الهاتف ( يكون عليه واتس)" required pattern="\d{11}" />
+            <textarea id="content" placeholder=" اكتب رسالتك للعامه..." required></textarea>
+            <button type="submit">إرسال</button>
         </form>
     </div>
-    <button id="openFormBtn">📝</button>
-    <button id="refreshBtn">تحديث الصفحة</button>
-    <button id="homeBtn">القائمة الرئيسية</button>
-    <button id="searchBtn">ابحث عن تاجر</button>
-    <img src="https://abueskander.github.io/firebase-messages/FB_IMG_1750277736215.jpg" alt="لوجو" id="chatLogo">
 </body>
 </html>
